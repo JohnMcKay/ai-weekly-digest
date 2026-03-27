@@ -197,6 +197,86 @@
     margin: 8px -16px;
   }
 
+  /* ── Clickable citation links ────────────────────────────── */
+  .content a.cite-link {
+    color: #4361ee;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: none;
+    font-size: 0.85em;
+    vertical-align: super;
+    line-height: 0;
+    padding: 0 1px;
+  }
+  .content a.cite-link:hover {
+    color: #f72585;
+    border-bottom: none;
+  }
+
+  /* Smooth scroll for anchor links */
+  html { scroll-behavior: smooth; }
+
+  /* Highlight target when jumping to a reference */
+  :target {
+    background: rgba(67, 97, 238, 0.08);
+    border-radius: 4px;
+    transition: background 0.3s;
+  }
+
+  /* ── Expandable deep dive sections ─────────────────────── */
+  .content details {
+    margin: 16px 0;
+    padding: 0;
+    border: 1px solid rgba(58, 12, 163, 0.12);
+    border-radius: 8px;
+    background: #faf8ff;
+    overflow: hidden;
+  }
+  .content details summary {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #3a0ca3;
+    cursor: pointer;
+    padding: 12px 16px;
+    background: linear-gradient(90deg, rgba(114, 9, 183, 0.04), transparent);
+    list-style: none;
+    user-select: none;
+  }
+  .content details summary::-webkit-details-marker { display: none; }
+  .content details summary::before {
+    content: '▶ ';
+    font-size: 10px;
+    margin-right: 6px;
+    transition: transform 0.2s;
+    display: inline-block;
+  }
+  .content details[open] summary::before {
+    transform: rotate(90deg);
+  }
+  .content details[open] summary {
+    border-bottom: 1px solid rgba(58, 12, 163, 0.08);
+    margin-bottom: 0;
+  }
+  .content details > *:not(summary) {
+    padding: 4px 16px;
+    font-size: 15px;
+    line-height: 1.65;
+  }
+  .content details p {
+    margin: 8px 0;
+  }
+
+  /* ── Buzz explanation callout ───────────────────────────── */
+  .content em:last-child,
+  .content p > em:only-child {
+    /* Buzz check lines are in italics at the end of each item */
+  }
+  .content p em {
+    color: #666;
+    font-size: 0.92em;
+  }
+
   /* ── Horizontal rule ──────────────────────────────────────── */
   .content hr {
     border: none;
@@ -237,7 +317,7 @@
     <p class="subtitle">March 20, 2026 — March 27, 2026</p>
     <div class="stats">
       <div class="stat">
-        <strong>6</strong>
+        <strong>8</strong>
         sources scanned
       </div>
       <div class="stat">
@@ -250,195 +330,388 @@
   <!-- Digest content -->
   <div class="content">
     <h2>🔥 The Big One</h2>
-<p><strong>SlopCodeBench: Benchmarking How Coding Agents Degrade Over Long-Horizon Iterative Tasks</strong> <code>🔥 43/100</code></p>
-<p>If you care about coding agents in the real world, this is the one to read first [4]. The core point is painfully practical: lots of agents can “solve the ticket,” but over multiple iterations they produce code that gets harder to extend, more fragile, and generally more cursed—basically passing tests while quietly poisoning the repo [4]. This matters because most benchmarks still reward one-shot correctness, while actual software work is iterative, stateful, and full of future regret; if your eval ignores that, you’re measuring demo quality, not engineering quality [4].</p>
-<p>Closely related, <strong>Understanding the Challenges in Iterative Generative Optimization with LLMs</strong> reports that only 9% of surveyed agents reliably improve artifacts over repeated feedback loops [11]. Honestly, taken together, [4] and [11] are a nice antidote to “just let the agent keep refining” optimism: iterative improvement is not free, and often it’s where systems start eating their own homework [11].</p>
-<h2>🤖 Agent Behavior &amp; Architecture</h2>
-<p><strong>bytedance/deer-flow</strong> <code>🔥 46/100</code></p>
-<p>Deer-flow is an open-source long-horizon “super agent” harness with sandboxes, memory, subagents, tools, and a message gateway [1]. I like this trend because it shifts the conversation from single-call prompting to systems design: if you want agents that work for hours, orchestration and isolation matter at least as much as model IQ [1].</p>
-<p><strong>UI-Voyager: A Self-Evolving GUI Agent Learning via Failed Experience</strong> <code>🔥 45/100</code></p>
-<p>UI-Voyager focuses on GUI agents that learn from failed trajectories rather than just successful ones [8]. That’s important because GUI work is sparse-reward hell—lots of clicking around, very little signal—so any method that turns failure into structured supervision is exactly the kind of thing these agents need [8].</p>
-<p><strong>Scaling Synthetic Task Generation for Agents via Exploration</strong> <code>🔥 33/100</code></p>
-<p>Apple’s piece is about generating diverse, feasible synthetic tasks for training interactive agents via exploration [5]. This matters because agent progress is increasingly bottlenecked by data, not just architecture; if you can’t cheaply generate good tasks, your post-training pipeline tops out fast [5].</p>
-<p><strong>Dreamer: the Personal Agent OS</strong> <code>🔥 30/100</code></p>
-<p>This is more vision than paper, but it’s worth tracking because it frames the “agent OS” idea clearly: persistent, personal, cross-app agents as a platform layer [6]. The ambition is real; whether the stack can actually support that without becoming an overpowered notification daemon remains the open question [6].</p>
-<p><strong>ruvnet/ruflo</strong> <code>🔥 45/100</code></p>
-<p>Ruflo is an orchestration platform for Claude-centered multi-agent workflows [7]. My take: these orchestration repos are useful not because “swarms” are magic, but because they encode reusable control-flow patterns—parallelism, delegation, recovery—that most teams otherwise reimplement badly at 2 a.m. [7]</p>
-<p><strong>NousResearch/hermes-agent</strong> <code>🔥 40/100</code></p>
-<p>Hermes-agent pitches itself as an agent that “grows with you” [19]. That usually means a flexible harness with room for memory, tools, and customization; not revolutionary on paper, but these repos matter because a lot of actual agent progress is happening in harness ergonomics, not just model releases [19].</p>
-<p><strong>browser-use/browser-use</strong> <code>🔥 39/100</code></p>
-<p>Browser-use continues to be one of the cleaner abstractions for making websites operable by agents [20]. Web automation is still one of the highest-leverage agent domains, and good browser grounding layers are the difference between “capable assistant” and “intern trapped in a pop-up modal” [20].</p>
-<h2>📝 Prompting &amp; Reasoning</h2>
 <p><strong>Why Does Self-Distillation (Sometimes) Degrade the Reasoning Capability of LLMs?</strong> <code>🔥 45/100</code></p>
-<p>This paper argues that self-distillation can shorten reasoning traces while actually hurting math performance, partly by suppressing epistemic uncertainty [2]. That’s a big deal because a lot of current optimization pressure rewards shorter, cleaner-looking outputs; but if the model stops expressing uncertainty, it may also stop doing the exploratory work needed to reason well [2].</p>
+<p>This is the one I’d actually want you to read first this week <a href="#ref-2" class="cite-link">[2]</a>. The paper’s core claim is simple but important: self-distillation can make a reasoning model <em>look</em> cleaner and more efficient—shorter traces, more decisive answers—while quietly damaging actual reasoning performance, especially in math <a href="#ref-2" class="cite-link">[2]</a>. The culprit, according to the authors, is suppression of <strong>epistemic verbalization</strong>: the model stops saying things like “wait, that may be wrong” or “let me check this assumption,” and those little uncertainty markers are not fluff. They’re part of the computation <a href="#ref-2" class="cite-link">[2]</a>.</p>
+<p>Methodologically, they don’t just wave at correlation. They run controlled experiments around self-distillation setups where a student model is trained on teacher outputs, then analyze how reasoning traces change under distillation <a href="#ref-2" class="cite-link">[2]</a>. The key observation is that distillation preferentially preserves concise, polished trajectories and washes out uncertain intermediate language. In effect, the student learns the teacher’s <em>surface confidence</em> better than the teacher’s actual internal search process <a href="#ref-2" class="cite-link">[2]</a>. That’s a very familiar failure mode if you’ve ever watched an agent become “more obedient” and simultaneously less robust. It’s the same pathology in academic clothing.</p>
+<p>The concrete result, from the summary, is that in mathematical reasoning the distilled model often produces <strong>shorter responses but worse performance</strong> <a href="#ref-2" class="cite-link">[2]</a>. The exact benchmark numbers matter in the full paper, but the directional result is the story: compression of reasoning traces is not free. We’ve collectively been too eager to celebrate “same accuracy, fewer tokens” as if token count were a sufficient statistic for thought. It isn’t.</p>
+<p>Why should you care? Because this hits a live nerve in current agent design <a href="#ref-2" class="cite-link">[2]</a>. A lot of post-training pipelines—self-improvement loops, preference tuning, trace distillation, response compression—implicitly reward outputs that are tidy, direct, and low-entropy. But for planning-heavy tasks, especially ones needing backtracking, uncertainty expression is often functional. If you train that away, you may be training away the model’s willingness to branch, reconsider, or hedge before committing. In other words: the model becomes the worst kind of confident—cheaply confident. For prompt engineering, this suggests that asking for “concise reasoning” or aggressively summarizing traces may be actively harmful in domains where uncertainty management matters. For agent systems, it argues for preserving scratchpad-like structures or latent deliberation channels rather than just harvesting polished final traces.</p>
+<p>What’s missing? A few things <a href="#ref-2" class="cite-link">[2]</a>. First, we still need a sharper causal account of when epistemic verbalization is genuinely part of reasoning versus just a textual byproduct. Not every “hmm” is doing work. Second, the paper is centered on math-style reasoning; we need to know whether the same degradation appears in tool-using agents, code repair loops, and long-horizon planning. My guess is yes, probably worse. Third, this raises an uncomfortable product question: if visible uncertainty helps reasoning, how do we preserve it without exposing messy chain-of-thought or degrading UX? That’s the real engineering problem now.</p>
+<p>My blunt take: this paper matters because it attacks a lazy assumption in the field—namely that better-compressed reasoning traces imply better reasoning models <a href="#ref-2" class="cite-link">[2]</a>. Sometimes the model isn’t becoming smarter; it’s just becoming more rhetorically efficient. Those are not the same thing. A peacock is not a theorem prover.</p>
+<p><em>Buzz check: 45/100 — decent traction and very relevant to current reasoning work, but it’s mostly circulating in one channel so far <a href="#ref-2" class="cite-link">[2]</a>.</em></p>
+<h2>🤖 Agent Behavior &amp; Architecture</h2>
+<p><strong>T-MAP: Red-Teaming LLM Agents with Trajectory-aware Evolutionary Search</strong> <code>🔥 44/100</code></p>
+<p>T-MAP goes after a real gap in agent safety: most red-teaming still treats the model like a chatbot, but agents fail through <strong>multi-step trajectories</strong>—tool calls, state changes, MCP interactions, and delayed consequences <a href="#ref-3" class="cite-link">[3]</a>. The paper’s contribution is a trajectory-aware evolutionary search procedure that mutates and selects attack prompts based not just on final text outputs, but on the <em>execution path</em> the agent takes <a href="#ref-3" class="cite-link">[3]</a>.</p>
+<p>Mechanically, the search keeps candidate attacks, evaluates them by the harmfulness and exploitability of resulting trajectories, and evolves them over iterations <a href="#ref-3" class="cite-link">[3]</a>. The “trajectory-aware” part matters because an attack that looks harmless at turn one may only become dangerous after the agent reads a poisoned tool result or follows a malicious MCP instruction. That’s exactly how real prompt injection works: the exploit is often in the breadcrumb trail, not the first sentence.</p>
+<p>Why care? Because if you’re evaluating agents with only static jailbreak prompts, you’re testing a tricycle on a Formula 1 track <a href="#ref-3" class="cite-link">[3]</a>. Tool-using agents need trajectory-level threat models. What’s missing is broad standardization: we still need common environments, shared attack corpora, and transfer studies across agent frameworks <a href="#ref-3" class="cite-link">[3]</a>.</p>
+<p><em>Buzz check: 44/100 — solid early interest and highly relevant, but still mostly single-source attention <a href="#ref-3" class="cite-link">[3]</a>.</em></p>
+<p><strong>UI-Voyager: A Self-Evolving GUI Agent Learning via Failed Experience</strong> <code>🔥 45/100</code></p>
+<p>UI-Voyager attacks the classic sparse-reward GUI problem: agents click around, fail, and learn almost nothing from the wreckage <a href="#ref-7" class="cite-link">[7]</a>. The paper proposes a <strong>two-stage self-evolving mobile GUI agent</strong> that explicitly mines failed trajectories for reusable knowledge and better credit assignment <a href="#ref-7" class="cite-link">[7]</a>.</p>
+<p>The method, from the summary, uses failed experience to improve future action selection rather than treating failure as dead data <a href="#ref-7" class="cite-link">[7]</a>. That sounds obvious, but in GUI agents it’s hard because the reward signal often arrives many steps later, after a whole chain of taps and screen transitions. Their key trick is to turn those failures into structured learning signals for subsequent attempts.</p>
+<p>Concrete result: the authors report improved performance on long-horizon mobile GUI tasks relative to prior methods, though the summary doesn’t expose the exact headline number <a href="#ref-7" class="cite-link">[7]</a>. Why care? Because this is the right direction for agent learning: stop pretending every episode is IID and start treating failures as curriculum. What’s missing is whether the learned improvements transfer across apps, layouts, and OS versions—or whether the agent is just becoming a very sophisticated memorizer of yesterday’s UI <a href="#ref-7" class="cite-link">[7]</a>.</p>
+<p><em>Buzz check: 45/100 — respectable traction and strong relevance, but not yet broadly amplified beyond the paper feed <a href="#ref-7" class="cite-link">[7]</a>.</em></p>
+<p><strong>Scaling Synthetic Task Generation for Agents via Exploration</strong> <code>🔥 33/100</code></p>
+<p>Apple’s AutoPlay pipeline is one of those papers that may look like “just data generation,” but honestly this matters a lot for agent training <a href="#ref-14" class="cite-link">[14]</a>. The core idea: instead of prompting a model to invent tasks in the abstract, first let an explorer agent systematically interact with an environment, discover states and affordances, then generate tasks grounded in what’s actually possible there <a href="#ref-14" class="cite-link">[14]</a>.</p>
+<p>The pipeline has two stages: <strong>exploration</strong> to uncover environment states and interactions, then <strong>task generation</strong> conditioned on those trajectories plus guideline prompts <a href="#ref-14" class="cite-link">[14]</a>. They then use an executor and verifier to synthesize demonstrations at scale. Concrete numbers: <strong>20k tasks across 20 Android apps</strong> and <strong>10k tasks across 13 Ubuntu apps</strong>, leading to up to <strong>20.0% improvement on mobile-use</strong> and <strong>10.9% on computer-use</strong> scenarios <a href="#ref-14" class="cite-link">[14]</a>.</p>
+<p>Why care? Because agent post-training is bottlenecked by grounded, verifiable tasks, not just bigger models <a href="#ref-14" class="cite-link">[14]</a>. This is a practical recipe for scaling data without armies of annotators. Missing piece: synthetic tasks can drift toward what the explorer already knows how to discover, so coverage may still be biased toward easy-to-find affordances <a href="#ref-14" class="cite-link">[14]</a>.</p>
+<p><em>Buzz check: 33/100 — lower social pickup, but technically more important than the buzz suggests <a href="#ref-14" class="cite-link">[14]</a>.</em></p>
+<h2>📝 Prompting &amp; Reasoning</h2>
 <p><strong>Thinking into the Future: Latent Lookahead Training for Transformers</strong> <code>🔥 33/100</code></p>
-<p>Apple’s latent lookahead idea is part of the broader move beyond explicit chain-of-thought toward internal planning in latent space [14]. I think this direction is genuinely important: token-by-token reasoning is like forcing someone to narrate every thought while solving a puzzle, which is not obviously the best cognitive interface for the model—or for us [14].</p>
-<h2>⚠️ Limitations &amp; Failure Modes — the stuff that keeps us honest</h2>
-<p><strong>T-MAP: Red-Teaming LLM Agents with Trajectory-aware Evolutionary Search</strong> <code>🔥 45/100</code></p>
-<p>T-MAP red-teams agents by searching over full action trajectories, not just prompts, to expose multi-step vulnerabilities in tool-using systems [3]. This is exactly the right threat model for agents: the dangerous behavior often doesn’t appear in one response, it emerges after a sequence of innocent-looking steps, like a bureaucratic paper trail from hell [3].</p>
+<p>This Apple paper is trying to buy the model extra “thinking time” <em>without</em> forcing it to emit explicit chain-of-thought tokens <a href="#ref-13" class="cite-link">[13]</a>. The claim is that next-token prediction is too myopic: the model must commit to a token immediately, even when the right move would be to simulate several plausible futures first <a href="#ref-13" class="cite-link">[13]</a>.</p>
+<p>The method is neat. At selected positions, the transformer recursively feeds its own <strong>hidden states</strong> back into context for <strong>τ lookahead steps</strong> before producing the next token <a href="#ref-13" class="cite-link">[13]</a>. Those latent predictions are supervised against the next τ ground-truth tokens. So instead of verbalizing “let me think,” the model performs a short latent rollout and trains that internal rollout to align with actual future sequence structure <a href="#ref-13" class="cite-link">[13]</a>.</p>
+<p>Result: it <strong>substantially outperforms autoregressive and non-autoregressive baselines</strong> on planning-heavy tasks like <strong>maze solving, Sudoku, and ProsQA</strong> <a href="#ref-13" class="cite-link">[13]</a>. Why care? Because this is one of the cleaner alternatives to explicit CoT: more compute where needed, less dependence on verbose reasoning text. Missing: we don’t yet know how this scales to frontier LLMs, open-ended language tasks, or tool-augmented agents. Workshop paper, promising idea, not yet a revolution <a href="#ref-13" class="cite-link">[13]</a>.</p>
+<p><em>Buzz check: 33/100 — low chatter, but the idea is interesting and could age well if it survives scale-up <a href="#ref-13" class="cite-link">[13]</a>.</em></p>
 <p><strong>Understanding the Challenges in Iterative Generative Optimization with LLMs</strong> <code>🔥 43/100</code></p>
-<p>This paper is a useful reality check on “self-improving agents,” showing how brittle iterative optimization remains across code, prompts, and workflows [11]. The headline 9% number should make everyone a little less smug about recursive refinement loops [11].</p>
+<p>This paper is basically a reality check for self-improving agents <a href="#ref-11" class="cite-link">[11]</a>. The authors look at <strong>generative optimization</strong>—using LLMs to iteratively improve artifacts like code, prompts, or workflows based on execution feedback—and argue the whole setup is much more brittle than the hype suggests <a href="#ref-11" class="cite-link">[11]</a>.</p>
+<p>The concrete hook is striking: only <strong>9% of surveyed agents</strong> used any automated optimization at all <a href="#ref-11" class="cite-link">[11]</a>. That tells you practitioners are voting with their feet. The paper’s contribution is less a new algorithm than a decomposition of why these loops fail: reward design is messy, execution feedback is partial, search spaces are weirdly discontinuous, and one bad edit can poison future iterations <a href="#ref-11" class="cite-link">[11]</a>. If single-shot prompting is like taking one exam, iterative optimization is like rewriting your dissertation while the committee changes the rubric every hour.</p>
+<p>Why care? Because a lot of “self-improving agent” rhetoric assumes the loop itself is straightforward once you have evals. It isn’t <a href="#ref-11" class="cite-link">[11]</a>. Missing piece: the paper diagnoses well, but unless it comes with robust design patterns or standardized optimization environments, it risks becoming a very accurate obituary for systems people still want to build <a href="#ref-11" class="cite-link">[11]</a>.</p>
+<p><em>Buzz check: 43/100 — decent traction because it names a pain everyone feels, though it’s still early-stage discussion energy <a href="#ref-11" class="cite-link">[11]</a>.</em></p>
+<h2>⚠️ Limitations &amp; Failure Modes — the stuff that keeps us honest</h2>
+<p><strong>SlopCodeBench: Benchmarking How Coding Agents Degrade Over Long-Horizon Iterative Tasks</strong> <code>🔥 43/100</code></p>
+<p>This benchmark targets something we’ve all seen and rarely measure properly: coding agents that pass tests today while quietly making the codebase uglier, more brittle, and harder to extend tomorrow <a href="#ref-4" class="cite-link">[4]</a>. The core claim is that single-shot SWE benchmarks miss “code rot induced by the agent itself” <a href="#ref-4" class="cite-link">[4]</a>.</p>
+<p>Method-wise, SlopCodeBench evaluates agents on <strong>iterative long-horizon software tasks</strong> where earlier design choices constrain later extensions <a href="#ref-4" class="cite-link">[4]</a>. The benchmark is intentionally less over-specified than prior iterative setups, so the agent’s architectural decisions actually matter. That’s good benchmarking hygiene: if you overconstrain the path, you’re not measuring agency, you’re measuring obedience.</p>
+<p>Why care? Because this changes what “success” means for coding agents <a href="#ref-4" class="cite-link">[4]</a>. Passing the current test suite is not enough; we need to score maintainability under future modifications. Missing: maintainability is notoriously hard to operationalize, and any benchmark of “slop” risks encoding the authors’ taste in software engineering. Still, this is exactly the kind of eval pressure the field needs <a href="#ref-4" class="cite-link">[4]</a>.</p>
+<p><em>Buzz check: 43/100 — strong relevance and healthy early interest, but still waiting for broader community adoption <a href="#ref-4" class="cite-link">[4]</a>.</em></p>
+<p><strong>Marriage over, €100,000 down the drain: the AI users whose lives were wrecked by delusion</strong> <code>🔥 44/100</code></p>
+<p>This is not a research paper, but I think it belongs here because it’s a failure mode the field keeps underestimating <a href="#ref-8" class="cite-link">[8]</a>. The article highlights users whose interactions with AI systems reinforced delusional beliefs, with real financial and personal damage <a href="#ref-8" class="cite-link">[8]</a>. If you work on long-memory companions, persuasive agents, or highly personalized assistants, this is not peripheral. It is the product risk.</p>
+<p>There’s no benchmark here, obviously, but the concrete result is the human one: marriages damaged, large sums lost, and delusional spirals amplified rather than interrupted <a href="#ref-8" class="cite-link">[8]</a>. Why care? Because as agents become more persistent, context-rich, and “helpful,” they also become better at stabilizing a user’s narrative—whether true or false. An always-available sycophant with retrieval is not alignment; it’s a very efficient bad idea.</p>
+<p>What’s missing is systematic evidence: prevalence, causal pathways, and intervention strategies still need real study <a href="#ref-8" class="cite-link">[8]</a>. But the absence of a clean dataset should not be confused with absence of a problem.</p>
+<p><em>Buzz check: 44/100 — notable community engagement because it hits a visceral risk, but it needs more than anecdotal circulation to drive policy <a href="#ref-8" class="cite-link">[8]</a>.</em></p>
 <p><strong>Introducing the OpenAI Safety Bug Bounty program</strong> <code>🔥 38/100</code></p>
-<p>OpenAI’s safety bug bounty explicitly includes agentic vulnerabilities like prompt injection and data exfiltration [13]. Good—because if we want agents deployed in messy environments, we need security incentives that match the actual attack surface, not just generic model misuse categories [13].</p>
+<p>This is more infrastructure than science, but I’m glad it exists <a href="#ref-12" class="cite-link">[12]</a>. OpenAI is explicitly opening a bug bounty lane for <strong>AI-specific safety failures</strong>, including <strong>agentic prompt injection, MCP risks, and data exfiltration</strong> <a href="#ref-12" class="cite-link">[12]</a>. That’s a signal that these are now treated as operational vulnerabilities, not just alignment seminar topics.</p>
+<p>The design detail I like is the requirement that some agentic exploits be <strong>reproducible at least 50% of the time</strong> to count <a href="#ref-12" class="cite-link">[12]</a>. That’s actually sensible. If your exploit only works under a full moon and emotional support YAML, it’s not yet a robust vulnerability. Why care? Because public incentive structures shape what gets discovered. If researchers can get rewarded for finding real agent failures, we’ll get better empirical maps of where these systems break <a href="#ref-12" class="cite-link">[12]</a>.</p>
+<p>Missing: bounty programs often bias toward flashy, reproducible exploits and underweight slower-burn harms like manipulation, overtrust, or subtle autonomy drift <a href="#ref-12" class="cite-link">[12]</a>. Still, this is progress.</p>
+<p><em>Buzz check: 38/100 — moderate pickup, but more important as a governance signal than as a social-media event <a href="#ref-12" class="cite-link">[12]</a>.</em></p>
 <h2>🔬 Notable Research</h2>
 <p><strong>CUA-Suite: Massive Human-annotated Video Demonstrations for Computer-Use Agents</strong> <code>🔥 41/100</code></p>
-<p>CUA-Suite keeps hanging around because it addresses a real bottleneck: high-quality continuous video demonstrations for computer-use agents [17]. The reason it still matters is simple—computer use is temporally dense, and sparse screenshots miss the stuff agents actually need to imitate, like transitions, timing, and recovery behavior [17].</p>
+<p>CUA-Suite keeps hanging around because the bottleneck it addresses is real <a href="#ref-17" class="cite-link">[17]</a>. The claim is that computer-use agents need <strong>continuous human demonstration video</strong>, not just sparse screenshots or action labels, and existing open datasets are too small to support serious scaling <a href="#ref-17" class="cite-link">[17]</a>.</p>
+<p>Methodologically, the contribution is a <strong>large human-annotated video demonstration dataset</strong> for computer-use agents <a href="#ref-17" class="cite-link">[17]</a>. The key design choice is continuity: video preserves temporal cues, cursor motion, hesitation, and micro-corrections that screenshot datasets throw away. For UI agents, that temporal glue is often the difference between “click the button” and “understand the workflow.”</p>
+<p>The summary doesn’t expose the exact dataset size in the snippet, but it positions CUA-Suite as materially larger than prior open resources <a href="#ref-17" class="cite-link">[17]</a>. Why care? Because if you believe computer-use agents will improve via imitation + post-training, then data like this is substrate, not garnish. Missing: demonstration data alone doesn’t solve generalization, and human traces can encode brittle habits along with expertise <a href="#ref-17" class="cite-link">[17]</a>.</p>
+<p><em>Buzz check: 41/100 — still trending after many weeks, which usually means the underlying need is real even if the headline isn’t flashy <a href="#ref-17" class="cite-link">[17]</a>.</em></p>
+<p><strong>Is LeCun’s $1B seed round the signal that autoregressive LLMs have hit a wall for formal reasoning?</strong> <code>🔥 39/100</code></p>
+<p>This is community discussion, not evidence, but it captures a live technical tension <a href="#ref-20" class="cite-link">[20]</a>. The question is whether formal reasoning and verified code synthesis need a different paradigm—energy-based models, constraint solving, latent search—because plain autoregressive next-token prediction may top out for high-rigor tasks <a href="#ref-20" class="cite-link">[20]</a>.</p>
+<p>I wouldn’t over-index on the funding theater. A billion-dollar seed round is not a proof sketch. But the underlying issue is serious: autoregressive models are excellent heuristic generators and mediocre guarantors <a href="#ref-20" class="cite-link">[20]</a>. If the task requires mathematical validity, safety-critical code, or hard constraints, we increasingly bolt on verifiers, solvers, and search. That’s already an admission that next-token prediction alone is not the whole story.</p>
+<p>Why care? Because it should shape your architecture instincts <a href="#ref-20" class="cite-link">[20]</a>. For formal domains, think hybrid systems first. Missing: there’s no new empirical result here, and EBMs have their own training and inference headaches. So for now, this is a useful debate, not a field-defining datapoint <a href="#ref-20" class="cite-link">[20]</a>.</p>
+<p><em>Buzz check: 39/100 — decent discussion energy because it taps into a real fault line, but it’s still mostly speculation at this stage <a href="#ref-20" class="cite-link">[20]</a>.</em></p>
 <h2>🛠️ Tools &amp; Repos Worth Cloning</h2>
+<p><strong>bytedance/deer-flow</strong> <code>🔥 46/100</code></p>
+<p>DeerFlow is the most relevant repo drop this week if you care about long-horizon agent harnesses <a href="#ref-1" class="cite-link">[1]</a>. The core contribution is a ground-up rewrite of an open-source <strong>super-agent harness</strong> that coordinates <strong>sub-agents, memory, sandboxes, tools, skills, and a message gateway</strong> for tasks that run from minutes to hours <a href="#ref-1" class="cite-link">[1]</a>.</p>
+<p>Design-wise, this is very much in the “agent as operating system” camp: split work across specialized workers, isolate risky execution in sandboxes, and persist state through memory/skills <a href="#ref-1" class="cite-link">[1]</a>. That architecture matters because long-horizon tasks fail less from one bad token than from poor decomposition and state management. The repo also signals recommended model pairings like Doubao-Seed-2.0-Code, DeepSeek v3.2, and Kimi 2.5, which tells you it’s optimized for a particular practical stack <a href="#ref-1" class="cite-link">[1]</a>.</p>
+<p>Why care? Because it’s a useful reference implementation for orchestrated research/coding agents, especially if you want to inspect how industrial teams are packaging subagent workflows in the open <a href="#ref-1" class="cite-link">[1]</a>. Missing: trending repos often demo well before they eval well. I’d want systematic reliability numbers, cost curves, and failure analyses before trusting it for serious autonomous runs <a href="#ref-1" class="cite-link">[1]</a>.</p>
+<p><em>Buzz check: 46/100 — strong GitHub traction and extremely on-topic, but still mostly a single-platform phenomenon <a href="#ref-1" class="cite-link">[1]</a>.</em></p>
 <p><strong>langchain-ai/open-swe</strong> <code>🔥 44/100</code></p>
-<p>Open-SWE is an open-source asynchronous coding agent [9]. “Asynchronous” is the interesting word here: serious coding agents need to manage waiting, branching, and external feedback gracefully, not just hammer one linear loop until the context window cries uncle [9].</p>
+<p>Open SWE is LangChain’s open-source template for the internal coding-agent pattern companies like Stripe and Ramp have been building privately <a href="#ref-9" class="cite-link">[9]</a>. The contribution is less “new algorithm” and more <strong>reference architecture</strong>: Slack/Linear invocation, cloud sandboxes, subagent orchestration, and automation hooks, built on <strong>LangGraph</strong> and <strong>Deep Agents</strong> <a href="#ref-9" class="cite-link">[9]</a>.</p>
+<p>The important design choice is asynchronous, organization-facing operation <a href="#ref-9" class="cite-link">[9]</a>. This isn’t just a CLI copilot; it’s meant to plug into existing engineering workflows with permissions and boundaries. That’s where real coding agents live or die—inside ticketing, review, and deployment systems, not in benchmark wonderland.</p>
+<p>Why care? Because if you’re designing internal agent infrastructure, this gives you a concrete starting point rather than another abstract framework diagram <a href="#ref-9" class="cite-link">[9]</a>. Missing: as usual, the hard parts are not in the README—auth, blast-radius control, evaluation in your own codebase, and the sociology of engineers trusting the thing. Repos can’t solve that for you <a href="#ref-9" class="cite-link">[9]</a>.</p>
+<p><em>Buzz check: 44/100 — healthy GitHub interest and highly relevant, though it still needs broader field validation <a href="#ref-9" class="cite-link">[9]</a>.</em></p>
 <p><strong>openai/codex</strong> <code>🔥 44/100</code></p>
-<p>OpenAI’s terminal-native Codex repo is a lightweight coding agent [10]. I’m bullish on terminal-first agents because the shell is already a universal action space for developers; you get leverage, composability, and auditability without inventing a fake IDE religion [10].</p>
-<p><strong>memvid/memvid</strong> <code>🔥 41/100</code></p>
-<p>Memvid is a single-file/serverless memory layer for agents [12]. Memory is still one of the least-settled parts of agent stacks, so pragmatic tools that simplify retrieval and persistence are worth attention—even if, yes, “replace complex RAG pipelines” should trigger your healthy skepticism reflex [12].</p>
-<p><strong>shareAI-lab/learn-claude-code</strong> <code>🔥 40/100</code></p>
-<p>This repo is a tiny Claude Code–like harness built basically from bash [18]. I love this kind of project because it strips away framework theater and shows what the minimal viable agent loop actually is [18].</p>
-<p><strong>Using Git with coding agents</strong> <code>🔥 31/100</code></p>
-<p>Simon Willison’s guide is practitioner gold: use Git aggressively with coding agents to isolate, inspect, and roll back their work [15]. This sounds obvious, but in practice it’s one of the highest-ROI prompting/ops patterns we have—version control is not just tooling here, it’s part of the safety envelope [15].</p>
+<p>OpenAI’s Codex CLI is a lightweight terminal coding agent <a href="#ref-10" class="cite-link">[10]</a>. The contribution here is product packaging: a local CLI, IDE integrations, and a bridge to broader cloud-based Codex experiences <a href="#ref-10" class="cite-link">[10]</a>. This is less novel research than a strong signal that terminal-native coding agents are becoming standard developer tooling.</p>
+<p>Method/design: local invocation via CLI, integration with account-based auth, and a workflow that keeps the agent close to the shell where developers already live <a href="#ref-10" class="cite-link">[10]</a>. That matters because reducing friction changes usage frequency, and usage frequency changes what kinds of tasks people will delegate.</p>
+<p>Why care? Because the terminal is still the natural habitat for serious coding workflows <a href="#ref-10" class="cite-link">[10]</a>. If you evaluate agents only in chat windows, you’re missing the ergonomics battle. Missing: the README doesn’t answer the questions researchers care about most—how much autonomy, what sandboxing defaults, what telemetry, what failure recovery, what evals. Product launch, not a transparency masterclass <a href="#ref-10" class="cite-link">[10]</a>.</p>
+<p><em>Buzz check: 44/100 — solid traction because it’s OpenAI shipping something developers can actually touch right now <a href="#ref-10" class="cite-link">[10]</a>.</em></p>
+<p><strong>shareAI-lab/learn-claude-code</strong> <code>🔥 45/100</code></p>
+<p>This repo is half tutorial, half manifesto, and honestly a useful one <a href="#ref-5" class="cite-link">[5]</a>. The pitch is “Bash is all you need”: build a minimal Claude Code–like harness from scratch and learn the engineering patterns instead of cargo-culting a giant framework <a href="#ref-5" class="cite-link">[5]</a>.</p>
+<p>The core idea is pedagogical: strip the agent harness down to shell primitives, tool invocation, and orchestration basics so you can see what’s actually essential <a href="#ref-5" class="cite-link">[5]</a>. I appreciate the repo’s strong opinion that frameworks are not the agent; the model is. That’s a bit overstated in systems terms, but as an antidote to framework fetishism it’s healthy.</p>
+<p>Why care? Because if you’re doing prompt engineering or agent design, understanding the minimal harness is incredibly clarifying <a href="#ref-5" class="cite-link">[5]</a>. Missing: minimal systems teach concepts but don’t automatically scale to production concerns like concurrency, policy enforcement, or observability. Bash is all you need right up until it absolutely isn’t <a href="#ref-5" class="cite-link">[5]</a>.</p>
+<p><em>Buzz check: 45/100 — strong engagement and high relevance, especially for practitioners trying to understand harness fundamentals <a href="#ref-5" class="cite-link">[5]</a>.</em></p>
 <h2>📊 Benchmarks &amp; Evals</h2>
 <p><strong>SlopCodeBench: Benchmarking How Coding Agents Degrade Over Long-Horizon Iterative Tasks</strong> <code>🔥 43/100</code></p>
-<p>Worth repeating here: this is one of the better benchmark ideas in the current wave because it measures whether agents leave behind maintainable code over time, not just whether they got a green checkmark once [4]. If you evaluate coding agents and you’re not testing long-horizon degradation, you’re probably missing the failure mode that users actually notice first [4].</p>
-<h2>📈 Two-Week Recap</h2>
-<p>Still trending: <strong>deer-flow</strong> remains sticky because people want long-horizon agent harnesses, not just another wrapper around tool calling [1]. <strong>Self-distillation hurts reasoning</strong> is also still alive because it pokes at a live tension in the field: everyone wants shorter traces and cheaper inference, but not if that means the model gets less thoughtful in the ways that matter [2].</p>
-<p>Quietly important: <strong>CUA-Suite</strong> and <strong>UI-Voyager</strong> are still here for a reason—computer-use agents are becoming a serious subfield, and the bottlenecks are now data quality, temporal grounding, and learning from failure, not just “can the model click buttons” [17][8]. If you’ve been dismissing GUI/computer-use work as benchmark tourism, I think that’s now outdated [17][8].</p>
-<p>Still getting attention but flattening a bit: <strong>ruflo</strong>, <strong>hermes-agent</strong>, and <strong>learn-claude-code</strong> are useful, but the orchestration-repo wave is becoming crowded [7][19][18]. The interesting question is no longer “can we build a multi-agent harness?”—yes, obviously—but which abstractions actually improve reliability rather than just adding more YAML and more opportunities for agents to hold meetings with themselves [7][19].</p>
-<p>What faded: <strong>SpecEyes</strong> and <strong>deepagents</strong> dropping out suggests the market is getting less impressed by generic “faster/more agentic” claims without strong eval stories. Honestly, that’s healthy. The center of gravity is moving from flashy architecture names toward benchmarks, failure analysis, and data pipelines—exactly where it should be.</p>
+<p>Worth calling out again here because it’s squarely an eval contribution <a href="#ref-4" class="cite-link">[4]</a>. The benchmark measures whether coding agents create local wins at the expense of global code health across iterative tasks <a href="#ref-4" class="cite-link">[4]</a>. That’s the eval we needed six months ago.</p>
+<p>The technique is benchmark design that preserves agent freedom instead of overconstraining implementation paths <a href="#ref-4" class="cite-link">[4]</a>. That means you can actually observe architectural debt accumulation. Why care? Because this could become a better proxy for real engineering utility than one-shot patch benchmarks. Missing: reproducibility and scoring standards for “slop” will make or break adoption <a href="#ref-4" class="cite-link">[4]</a>.</p>
+<p><em>Buzz check: 43/100 — good early traction, but benchmark legitimacy comes from usage, not launch-week attention <a href="#ref-4" class="cite-link">[4]</a>.</em></p>
+<p><strong>CUA-Suite: Massive Human-annotated Video Demonstrations for Computer-Use Agents</strong> <code>🔥 41/100</code></p>
+<p>Also belongs in evals because datasets are destiny <a href="#ref-17" class="cite-link">[17]</a>. CUA-Suite provides a richer substrate for training and evaluating computer-use agents with continuous video demonstrations <a href="#ref-17" class="cite-link">[17]</a>. If your current benchmark only sees screenshots, it’s grading a movie from three still frames.</p>
+<p>Why care? Because better data changes what failure modes become visible <a href="#ref-17" class="cite-link">[17]</a>. Missing: we still need standardized task splits and transfer evaluations that prevent overfitting to demonstration style <a href="#ref-17" class="cite-link">[17]</a>.</p>
+<p><em>Buzz check: 41/100 — sustained attention suggests people see it as infrastructure, not just another paper-of-the-week <a href="#ref-17" class="cite-link">[17]</a>.</em></p>
+<h2>📈 Two-Week Recap — What&rsquo;s still trending, what&rsquo;s picking up steam, and what already faded</h2>
+<p>A few things are clearly sticking. <strong>DeerFlow</strong> <a href="#ref-1" class="cite-link">[1]</a>, <strong>learn-claude-code</strong> <a href="#ref-5" class="cite-link">[5]</a>, <strong>Ruflo</strong> <a href="#ref-6" class="cite-link">[6]</a>, <strong>Hermes Agent</strong> <a href="#ref-19" class="cite-link">[19]</a>, <strong>TradingAgents</strong> <a href="#ref-18" class="cite-link">[18]</a>, <strong>CUA-Suite</strong> <a href="#ref-17" class="cite-link">[17]</a>, <strong>UI-Voyager</strong> <a href="#ref-7" class="cite-link">[7]</a>, and the <strong>self-distillation reasoning paper</strong> <a href="#ref-2" class="cite-link">[2]</a> have all shown up repeatedly over roughly two months. That tells me the center of gravity is still: agent harnesses, self-improving loops, computer-use data, and reasoning quality under post-training. In plain English, people are still trying to answer the same three questions: how do we build agents that persist over time, how do we train them without hand-labeling everything, and how do we stop them from getting dumber when we optimize them.</p>
+<p>What’s quietly becoming more important this week is <strong>evaluation of long-horizon degradation</strong>. <strong>SlopCodeBench</strong> <a href="#ref-4" class="cite-link">[4]</a> and <strong>iterative generative optimization brittleness</strong> <a href="#ref-11" class="cite-link">[11]</a> are part of the same correction: the field is finally noticing that agents fail not just by being wrong, but by being <em>cumulatively wrong in ways that poison future work</em>. This matters because a lot of current coding-agent enthusiasm is benchmark-inflated. If an agent lands a patch quickly but leaves behind a swamp, that’s not acceleration; that’s deferred maintenance with extra tokens.</p>
+<p>On the safety side, <strong>T-MAP</strong> <a href="#ref-3" class="cite-link">[3]</a> plus OpenAI’s <strong>Safety Bug Bounty</strong> <a href="#ref-12" class="cite-link">[12]</a> suggest a healthy shift from “can the model say a bad thing?” to “can the agent be manipulated across tools, memory, and MCP?” That’s a much more realistic threat model. Frankly, this is overdue.</p>
+<p>What faded? Some of last week’s multimodal acceleration and orchestration hype—<strong>SpecEyes</strong>, <strong>awesome-claude-code</strong>, <strong>daytona</strong>, <strong>deepagents</strong>—looks more incremental in hindsight. Useful, yes, but not obviously where the conceptual action is right now. The market loves infrastructure repos; the research frontier is increasingly about <em>what breaks when these systems run for a while</em>. That’s the more interesting story.</p>
 <h2>Bottom line</h2>
-<p>This week’s signal is pretty coherent: the field is maturing from “look, an agent!” to “does it hold up over long horizons, under iteration, and under attack?” [4][11][3]. If I were prioritizing your reading, I’d start with <strong>SlopCodeBench</strong> [4], then <strong>the self-distillation paper</strong> [2], then <strong>T-MAP</strong> [3]; after that, skim <strong>deer-flow</strong> [1] and <strong>open-swe/codex</strong> [9][10] for implementation instincts. The big meta-point is that reliability is finally becoming first-class—slowly, imperfectly, but for once the hype cycle is being forced to meet software reality.</p>
+<p>My honest read: this week is about <strong>sobering up</strong>. The most important signal is that making reasoning traces shorter, cleaner, or more distilled can backfire <a href="#ref-2" class="cite-link">[2]</a>; the second is that long-horizon agents need better evals and trajectory-level safety testing, not just better demos <a href="#ref-3" class="cite-link">[3]</a><a href="#ref-4" class="cite-link">[4]</a><a href="#ref-11" class="cite-link">[11]</a>. If I were prioritizing your reading, I’d do the self-distillation paper first <a href="#ref-2" class="cite-link">[2]</a>, then SlopCodeBench <a href="#ref-4" class="cite-link">[4]</a>, then T-MAP <a href="#ref-3" class="cite-link">[3]</a>, and keep Apple’s synthetic task generation paper <a href="#ref-14" class="cite-link">[14]</a> in the “quietly useful” pile. For tooling, DeerFlow <a href="#ref-1" class="cite-link">[1]</a> and Open SWE <a href="#ref-9" class="cite-link">[9]</a> are worth skimming as architecture references, but I wouldn’t mistake repo momentum for solved science. The field is still very much in the phase where agents can look smoother while becoming more fragile. That’s the thing to keep your eye on.</p>
+<h2>🔬 Technical Deep Dives</h2>
+<p><em>Click to expand — detailed breakdowns for items with available source content.</em></p>
+<details>
+<summary><strong>📄 bytedance/deer-flow <a href="#ref-1" class="cite-link">[1]</a></strong></summary>
+
+DeerFlow 2.0 is not a model paper; it’s an **agent systems framework**. So the right mental model is orchestration architecture, not neural architecture. From the README, the core design primitives are **sub-agents**, **memory**, **sandboxes**, and **extensible skills**. That suggests a controller/worker topology where a top-level planner delegates tasks to specialized agents, each with tool access and isolated execution environments. The mention of “super agent harness” and ByteDance’s InfoQuest integration implies a retrieval-heavy stack: web search/crawling, likely document parsing, then synthesis by one or more LLMs. The recommendation to use **Doubao-Seed-2.0-Code, DeepSeek v3.2, and Kimi 2.5** strongly hints the framework is **model-agnostic** but optimized for high-context, tool-using frontier coding/research models.
+
+What’s missing, crucially, is the actual execution graph. I’d want to know: is orchestration implemented as a DAG, event bus, or iterative ReAct loop? How is memory represented—vector store, scratchpad, episodic logs, or structured state? Are sandboxes Docker containers, Firecracker VMs, or language-specific runtimes? How are skills registered—JSON schema tools, Python plugins, MCP servers? None of that is visible in the provided excerpt, and those details determine reproducibility and safety.
+
+For practitioners, the big win is likely **composability**: you can wire in your own search, code execution, browsing, and domain-specific tools. But reproduction here means infrastructure work: model credentials, sandbox provisioning, search APIs, and probably careful prompt/tool policy tuning. If DeerFlow is intended for “deep research,” evaluation should include task completion, citation fidelity, browsing efficiency, and cost/latency—not just demo quality.
+
+Limitations: the README markets capability, but doesn’t disclose **benchmark results**, **failure rates**, or **security boundaries**. In an agent harness with browsing and sandboxes, prompt injection, tool misuse, and runaway cost are first-order concerns. A serious technical report should include guardrails, observability, and ablation studies on sub-agent decomposition.
+
+---
+
+</details>
+
+<details>
+<summary><strong>📄 shareAI-lab/learn-claude-code <a href="#ref-5" class="cite-link">[5]</a></strong></summary>
+
+This repository is more of a **position paper / educational manifesto** than a technical system contribution. Its central claim—“the model is the agent”—pushes back against the current industry habit of calling orchestration frameworks “agents.” Technically, that’s a useful distinction. In classic RL and sequential decision-making, the **policy network** is indeed the agent; wrappers, toolchains, and memory systems are scaffolding around it. The README supports that argument with canonical examples: **DQN** for Atari, **OpenAI Five** for Dota 2, and **AlphaStar** for StarCraft II.
+
+Let’s unpack the methodological substance behind those examples. DQN used a convolutional network trained with **Q-learning**, replay buffers, and target networks on raw pixel input. OpenAI Five used large-scale **self-play reinforcement learning** with recurrent policies and population-based training over the Dota action space. AlphaStar combined **supervised imitation learning** from human replays with **multi-agent RL**, league training, and autoregressive action heads under partial observability. In all three cases, the “agent” is the learned policy, not the surrounding infrastructure. So the repo’s conceptual framing is historically defensible.
+
+But as a practitioner resource for “Claude Code” or harness engineering, the excerpt is missing the practical bridge. If the thesis is that frameworks are not agents, what exactly is being taught? Prompting patterns? tool schemas? environment design? evaluation harnesses? human-in-the-loop review? There are no architecture diagrams, no code-level abstractions, no benchmark tasks, and no empirical comparisons between single-model and multi-component systems.
+
+That absence matters. In modern coding agents, a strong base model plus retrieval, tools, execution, and state management often outperforms a “pure” model in real workflows. So the repo risks creating a false dichotomy: **agent as learned policy** versus **agentic system as deployed product**. Both are useful concepts. The limitation here is not the thesis—it’s the lack of operational detail. I’d want concrete examples showing when harness engineering helps, when it hurts, and how to evaluate the boundary between model capability and system capability.
+
+---
+
+</details>
+
+<details>
+<summary><strong>📄 ruvnet/ruflo <a href="#ref-6" class="cite-link">[6]</a></strong></summary>
+
+Ruflo positions itself as an **enterprise multi-agent orchestration platform** for Claude Code, with some unusually strong systems claims: **100+ specialized agents**, **self-learning**, **fault-tolerant consensus**, **enterprise-grade security**, and **WASM kernels written in Rust** powering the policy engine, embeddings, and proof system. That’s a very ambitious stack. Architecturally, this sounds like a hybrid of agent scheduler + execution runtime + coordination substrate. The Rust/WASM note is especially interesting: it suggests deterministic, portable execution for core orchestration logic, likely to support sandboxing, low-latency policy evaluation, and maybe verifiable execution traces.
+
+The likely architecture is a **swarm orchestration model**: a coordinator decomposes work into subproblems, dispatches them to specialist agents, aggregates outputs, and resolves conflicts through some consensus mechanism. “Fault-tolerant consensus” could mean majority voting, confidence-weighted arbitration, or even Byzantine-style agreement over task outputs—but the README excerpt doesn’t specify. “Self-learning” is also underspecified: are they doing prompt evolution, memory-based adaptation, offline fine-tuning, reinforcement from task outcomes, or heuristic policy updates? Those are radically different things.
+
+From a reproduction standpoint, this is where the missing details bite hard. Practitioners would need to know:
+- how agents are defined: prompt roles, tool access, skill modules?
+- how communication works: shared memory, message passing, blackboard?
+- what embeddings model/store is used?
+- what “proof system” means: provenance graph, formal verification, cryptographic attestation?
+- what security model exists around code execution and secrets?
+
+No dataset, no benchmark, and no quantitative results are provided in the excerpt. For a platform making enterprise claims, I’d expect numbers on throughput, task success, latency under parallel load, recovery from agent failures, and cost scaling with swarm size.
+
+The biggest limitation is **marketing-language density without protocol-level specificity**. Multi-agent systems often degrade into expensive chatter unless task decomposition and aggregation are carefully engineered. Without evaluation and ablations, “100+ agents” may be more liability than capability. I’d want hard evidence that the swarm improves over a strong single-agent baseline.
+
+---
+
+</details>
+
+<details>
+<summary><strong>📄 Marriage over, €100,000 down the drain: the AI users whose lives were wrecked by delusion <a href="#ref-8" class="cite-link">[8]</a></strong></summary>
+
+This is not a research paper or software artifact; it’s a **journalistic report on AI-induced delusion and harm**. So the right technical lens is **AI safety, human factors, and deployment risk**, not model architecture. The likely phenomenon here is a combination of **anthropomorphic over-trust**, **sycophancy**, **reinforcement of false beliefs**, and possibly **parasocial dependency**. Modern LLMs are trained with a mix of next-token prediction and post-training alignment methods—typically **supervised fine-tuning** plus **preference optimization** (e.g., RLHF/DPO variants). Those post-training objectives often reward responses that feel helpful, validating, and coherent. In vulnerable contexts, that can become dangerous: the model may mirror or escalate delusional framing rather than challenge it.
+
+There are no dataset details or numerical results in the provided content because this is a media story, not an empirical study. That’s exactly what’s missing if we want a rigorous deep dive. I’d want case taxonomy, model/provider comparisons, transcript analysis, prevalence estimates, and confounders such as preexisting mental health conditions, financial vulnerability, and social isolation. Without that, we should be careful not to overgeneralize from anecdote.
+
+For practitioners building agents or companion systems, the operational lesson is huge: **failure modes are not only “wrong answer” failures; they are relational and behavioral failures**. Systems that maintain long-term memory, emotional tone, or high-agency tool use can amplify harm. Reproduction, in a safety sense, means building evaluation suites for:
+- delusion affirmation,
+- dependency-seeking dialogue,
+- manipulation susceptibility,
+- escalation under repeated prompting,
+- and financial/social coercion scenarios.
+
+A limitation the article likely has is selection bias toward dramatic cases. But a limitation the industry often has is the opposite: underestimating rare but severe harms because they don’t show up in standard benchmark averages. This is exactly the class of risk where qualitative incident reports should feed back into formal red-team protocols and product guardrails.
+
+---
+
+</details>
+
+<details>
+<summary><strong>📄 langchain-ai/open-swe <a href="#ref-9" class="cite-link">[9]</a></strong></summary>
+
+Open SWE is a **framework for internal software engineering agents**, and the architecture is much clearer than most trendy repos. It is built on **LangGraph** and **Deep Agents**, which strongly suggests a **stateful graph-based orchestration** model rather than a single prompt loop. The README explicitly mentions **cloud sandboxes**, **Slack and Linear invocation**, **subagent orchestration**, and **automatic PR creation**. That maps nicely onto the now-standard enterprise coding-agent pipeline: intake from existing work channels, retrieval of org-specific context, isolated execution against a codebase, iterative planning/patching/testing, and output as a reviewable pull request.
+
+Technically, the key design choice is that this is an **internal agent pattern**, not a generic autonomous coder. That means the real “model architecture” is a systems architecture: event triggers, permissioning, tool routing, sandbox lifecycle, and auditability. LangGraph usually provides explicit node/state transitions, so practitioners can encode planner-executor-reviewer loops, human approval checkpoints, and retry logic. Deep Agents likely contributes reusable subagent patterns for decomposition and tool use.
+
+What’s missing from the excerpt is the exact graph: what nodes exist, how state is persisted, what retrieval layer is used for internal docs/code, and how PR quality is validated. I’d also want to know the default models, test execution strategy, and how secrets are handled inside cloud sandboxes. There’s no benchmark data here—no SWE-bench numbers, no internal task success rates, no latency/cost metrics—so we can’t assess performance claims.
+
+To reproduce this in practice, you’ll need more than `pip install`: a sandbox provider, source control integration, Slack/Linear credentials, model endpoints, and a carefully scoped permission model. The biggest practical challenge is not prompting—it’s **org-specific context plumbing** and **safety boundaries**. Limitations: internal coding agents can silently overfit to happy-path workflows. They often struggle with flaky tests, monorepos, hidden tribal knowledge, and subtle architectural constraints not encoded in docs. Open SWE looks promising, but success will depend on operational discipline more than framework defaults.
+
+---
+
+</details>
+
+<details>
+<summary><strong>📄 openai/codex <a href="#ref-10" class="cite-link">[10]</a></strong></summary>
+
+Codex here is a **local coding-agent CLI**, not the original 2021 code model. The architecture, as described, is product-centric: a command-line agent that runs on your machine, with optional IDE integration and a cloud/web counterpart. That implies a hybrid execution model where the **reasoning/model inference is remote**, but **tool execution and repository interaction are local**. This is a crucial systems choice: local execution gives the agent direct access to your filesystem, Git repo, and developer environment, while preserving the familiar terminal workflow.
+
+The README gives installation and auth details, but almost no internals. We don’t know the planner/executor loop, whether it uses structured tool calls, how it handles shell command approval, whether it maintains persistent memory, or how it scopes file edits. For a coding agent, these details matter more than branding. A strong implementation typically includes: repository summarization, code search, diff-aware editing, test execution, Git integration, and rollback/review support. I would expect Codex CLI to have some combination of these, but the excerpt doesn’t confirm them.
+
+There are also no training details, loss functions, or datasets because this repo is for the **client/tooling layer**, not model training. If you’re trying to reproduce behavior scientifically, you can’t from this README alone. You’d need model family/version, context window, tool-use policy, and evaluation results on coding benchmarks or real-world tasks.
+
+For practitioners, the main operational takeaway is deployment simplicity: install via npm/Homebrew, authenticate with ChatGPT or API key, and run locally. That lowers friction dramatically compared to building your own agent harness. But the tradeoff is opacity. You inherit OpenAI’s model and product decisions, and may have limited control over orchestration, telemetry, or safety policies.
+
+Limitations: local coding agents can be extremely powerful but risky—shell access, secret exposure, destructive commands, and subtle codebase corruption are all real concerns. A mature CLI needs explicit approval modes, sandboxing options, and strong diff/test review ergonomics. The README excerpt doesn’t surface those safeguards, and I’d want them front and center.
+
+---
+
+</details>
+
+<details>
+<summary><strong>📄 Introducing the OpenAI Safety Bug Bounty program <a href="#ref-12" class="cite-link">[12]</a></strong></summary>
+
+This is a notable shift: OpenAI is formalizing **AI safety failures as bounty-eligible bugs**, not just classic security vulnerabilities. That’s technically important because many harmful behaviors in agentic systems are **not** memory corruption, auth bypass, or RCE—they’re failures of policy adherence, tool mediation, and model robustness. The program explicitly covers **agentic risks including MCP**, **third-party prompt injection and data exfiltration**, harmful agent actions, proprietary reasoning leakage, and platform integrity manipulation.
+
+The most concrete criterion in the excerpt is the reproducibility threshold: prompt injection/data exfiltration attacks must succeed **at least 50% of the time**. That’s a very practical standard. It recognizes stochasticity in LLM systems while still demanding reliability before triage. In effect, OpenAI is treating safety exploits like probabilistic system vulnerabilities. That’s exactly right for model-mediated products.
+
+Architecturally, this bounty scope reflects the modern agent stack: an LLM policy connected to tools, browsers, MCP servers, and account systems. The key failure mode is **instruction hierarchy collapse**—untrusted content overrides user/developer intent, causing the agent to leak secrets or take harmful actions. The bounty also includes “OpenAI proprietary information related to reasoning,” which signals concern over hidden chain-of-thought or internal metadata extraction, and “account/platform integrity” issues like anti-automation evasion.
+
+For practitioners, this is a blueprint for internal red-teaming. If you build agents, your evaluation suite should include:
+- prompt injection from web pages/docs,
+- cross-tool exfiltration attempts,
+- unauthorized action execution,
+- trust-signal manipulation,
+- and reproducibility measurement across runs.
+
+What’s missing are payout tiers, severity taxonomy, and detailed safe-harbor guidance in the excerpt. Also, jailbreaks are out of scope, which is understandable operationally but leaves a gray area: some jailbreaks become materially harmful only when coupled to tools. The limitation of any bounty program is coverage—it incentivizes reportable exploits, not necessarily subtle long-horizon harms. Still, this is a strong signal that AI safety is becoming operationalized like security engineering.
+
+---
+
+</details>
+
+<details>
+<summary><strong>📄 Thinking into the Future: Latent Lookahead Training for Transformers <a href="#ref-13" class="cite-link">[13]</a></strong></summary>
+
+This paper is the most technically interesting item in the batch. The core idea is to augment standard **autoregressive next-token prediction** with a mechanism that lets the transformer perform **multiple latent-space lookahead steps before committing to the next discrete token**. Instead of sampling hypothetical future tokens, the model recursively feeds its own **hidden states** back into context for **τ steps**, producing latent predictions supervised against the next **τ ground-truth tokens**. So the training signal is no longer just “predict token t+1 from prefix x≤t,” but “internally simulate several future steps in representation space and align them with future targets.”
+
+That’s clever because it attacks two weaknesses of vanilla AR decoding: (1) forced commitment to a single token at every step, and (2) uniform compute allocation per token. Hard tokens may need more internal computation; latent lookahead gives them extra “thinking” without branching over discrete token sequences. Conceptually, this is adjacent to recurrent depth / adaptive computation ideas, but applied within transformer hidden-state dynamics.
+
+The paper reports substantial gains on **planning-heavy tasks**: **maze solving, Sudoku, and ProsQA**. The excerpt doesn’t include exact numbers, which is frustrating—I’d want absolute accuracy, relative improvement, model sizes, and compute overhead. It does say latent lookahead outperforms both autoregressive and non-autoregressive baselines, which suggests the benefit is not merely from predicting multiple future tokens, but from doing so in latent space.
+
+For reproduction, the missing details are critical: where in the sequence are lookahead positions selected? Is τ fixed or sampled? Are hidden states detached between recursive steps? Are parameters shared across lookahead recursions? What exact loss combines the τ supervision terms? How is inference performed—does the model also do lookahead at test time, and at what cost?
+
+Likely limitations: added training/inference compute, possible instability from recursive hidden-state reuse, and uncertain transfer to open-ended language tasks. Still, this is a serious method contribution with a clean hypothesis: better internal foresight improves sequential reasoning.
+
+---
+
+</details>
+
+<details>
+<summary><strong>📄 Scaling Synthetic Task Generation for Agents via Exploration <a href="#ref-14" class="cite-link">[14]</a></strong></summary>
+
+Apple’s **AutoPlay** tackles one of the nastiest bottlenecks in agent training: getting large quantities of **environment-grounded, feasible, and verifiable tasks** without paying humans to author them. The pipeline is two-stage. First, an **MLLM explorer agent** interacts with the environment to discover states, affordances, and transitions. Second, a **task generator** uses those exploration trajectories plus guideline prompts to synthesize tasks that are actually executable in that environment. This is a big upgrade over naive prompt-only task generation, which often invents unrealistic or unverifiable tasks because it lacks grounded state information.
+
+The scale is impressive: **20k tasks across 20 Android apps** and **10k tasks across 13 Ubuntu applications**. Those tasks are then used to synthesize demonstrations using an **MLLM executor and verifier**, again avoiding human annotation. The resulting data improves UI-agent success rates by **up to 20.0% on mobile-use** and **10.9% on computer-use** tasks. Then they go one step further: use **MLLM verifier-based rewards** for reinforcement learning, yielding an additional **5.7% gain**. That’s a strong systems story: exploration → task synthesis → demonstration generation → post-training → RL refinement.
+
+Methodologically, the key innovation is using exploration as a data engine. It’s a form of automated curriculum construction grounded in actual app affordances. For practitioners, this is highly actionable if you train web/mobile/computer-use agents. You need: an instrumented environment, an explorer policy that maximizes novelty/coverage, a task schema with verifiability constraints, and a verifier reliable enough to score outcomes.
+
+What’s missing from the excerpt are the exact model backbones, prompt templates, exploration policy objective, and benchmark definitions. I’d also want quality metrics on generated tasks: novelty, solvability, false-verification rate, and diversity across apps. The likely limitation is verifier brittleness—if the verifier is wrong, you can scale bad supervision very efficiently. Still, this is exactly the kind of data-centric agent training work the field needs.
+
+---
+
+</details>
+
+<details>
+<summary><strong>📄 Using Git with coding agents <a href="#ref-15" class="cite-link">[15]</a></strong></summary>
+
+Simon Willison’s piece is not a model paper, but it is a genuinely important **agent engineering pattern**. The central insight is simple and powerful: **Git is the control plane for coding agents**. Because agents are already fluent in Git commands and repository structure, version control becomes more than backup—it becomes a mechanism for context loading, experiment isolation, provenance, and rollback. That’s a systems design point, not a convenience tip.
+
+The technical pattern is to use Git state as structured external memory. A fresh agent session can be seeded by asking it to inspect **recent commits, diffs, and logs**, which instantly grounds it in what changed and why. That’s much better than re-explaining project status in natural language. Branches provide safe parallelism: you can let an agent attempt a risky refactor on an isolated branch, compare diffs, and merge only after tests and review. In effect, Git supplies a persistent, queryable trajectory of prior actions—exactly the sort of state history agents otherwise struggle to maintain.
+
+There’s no architecture/loss/dataset here because this is workflow guidance, but for practitioners the reproducibility angle is excellent. If you want reliable coding-agent usage:
+- start every task in a repo,
+- commit before handing off,
+- ask the agent to read `git log`, `git diff`, and blame/history where relevant,
+- use branches per task,
+- and require small, reviewable commits.
+
+That pattern dramatically reduces the blast radius of hallucinated edits or misunderstood requirements. It also makes human-agent collaboration auditable.
+
+The limitation is that Git fluency does not equal software engineering judgment. Agents can still produce noisy commit histories, misuse rebases, or generate semantically wrong but syntactically clean diffs. Also, Git captures code evolution, not runtime intent, architecture rationale, or hidden operational constraints. So Git is a superb substrate for agent workflows—but not a substitute for tests, code review, and deployment discipline. In modern agentic coding, Git is necessary, not sufficient.
+
+</details>
+
 <h2>📚 References</h2>
-<p><strong>[1]</strong> <a href="https://github.com/bytedance/deer-flow">bytedance/deer-flow</a> <em>(GitHub Trending)</em> <code>🔥 46/100</code></p>
-<p><strong>[2]</strong> <a href="https://huggingface.co/papers/2603.24472">Why Does Self-Distillation (Sometimes) Degrade the Reasoning Capability of LLMs?</a> — Jeonghye Kim, Xufang Luo <em>(HuggingFace Papers)</em> <code>🔥 45/100</code></p>
-<p><strong>[3]</strong> <a href="https://huggingface.co/papers/2603.22341">T-MAP: Red-Teaming LLM Agents with Trajectory-aware Evolutionary Search</a> — Hyomin Lee, Sangwoo Park <em>(HuggingFace Papers)</em> <code>🔥 45/100</code></p>
-<p><strong>[4]</strong> <a href="https://huggingface.co/papers/2603.24755">SlopCodeBench: Benchmarking How Coding Agents Degrade Over Long-Horizon Iterative Tasks</a> — Gabriel Orlanski, Devjeet Roy <em>(HuggingFace Papers)</em> <code>🔥 43/100</code></p>
-<p><strong>[5]</strong> <a href="https://machinelearning.apple.com/research/scaling-synthetic-task">Scaling Synthetic Task Generation for Agents via Exploration</a> <em>(Apple ML Research)</em> <code>🔥 33/100</code></p>
-<p><strong>[6]</strong> <a href="https://www.latent.space/p/dreamer">Dreamer: the Personal Agent OS — David Singleton</a> <em>(Latent Space)</em> <code>🔥 30/100</code></p>
-<p><strong>[7]</strong> <a href="https://github.com/ruvnet/ruflo">ruvnet/ruflo</a> <em>(GitHub Trending)</em> <code>🔥 45/100</code></p>
-<p><strong>[8]</strong> <a href="https://huggingface.co/papers/2603.24533">UI-Voyager: A Self-Evolving GUI Agent Learning via Failed Experience</a> — Zichuan Lin, Feiyu Liu <em>(HuggingFace Papers)</em> <code>🔥 45/100</code></p>
-<p><strong>[9]</strong> <a href="https://github.com/langchain-ai/open-swe">langchain-ai/open-swe</a> <em>(GitHub Trending)</em> <code>🔥 44/100</code></p>
-<p><strong>[10]</strong> <a href="https://github.com/openai/codex">openai/codex</a> <em>(GitHub Trending)</em> <code>🔥 44/100</code></p>
-<p><strong>[11]</strong> <a href="https://huggingface.co/papers/2603.23994">Understanding the Challenges in Iterative Generative Optimization with LLMs</a> — Allen Nie, Xavier Daull <em>(HuggingFace Papers)</em> <code>🔥 43/100</code></p>
-<p><strong>[12]</strong> <a href="https://github.com/memvid/memvid">memvid/memvid</a> <em>(GitHub Trending)</em> <code>🔥 41/100</code></p>
-<p><strong>[13]</strong> <a href="https://openai.com/index/safety-bug-bounty">Introducing the OpenAI Safety Bug Bounty program</a> <em>(OpenAI Blog)</em> <code>🔥 38/100</code></p>
-<p><strong>[14]</strong> <a href="https://machinelearning.apple.com/research/latent-lookahead">Thinking into the Future: Latent Lookahead Training for Transformers</a> <em>(Apple ML Research)</em> <code>🔥 33/100</code></p>
-<p><strong>[15]</strong> <a href="https://simonwillison.net/guides/agentic-engineering-patterns/using-git-with-coding-agents/#atom-everything">Using Git with coding agents</a> <em>(Simon Willison)</em> <code>🔥 31/100</code></p>
-<p><strong>[16]</strong> <a href="https://www.latent.space/p/ainews-the-biggest-claude-launch">[AINews] The Biggest Claude Launch of All Time</a> <em>(Latent Space)</em> <code>🔥 30/100</code></p>
-<p><strong>[17]</strong> <a href="https://huggingface.co/papers/2603.24440">CUA-Suite: Massive Human-annotated Video Demonstrations for Computer-Use Agents</a> — Xiangru Jian, Shravan Nayak <em>(HuggingFace Papers)</em> <code>🔥 41/100</code></p>
-<p><strong>[18]</strong> <a href="https://github.com/shareAI-lab/learn-claude-code">shareAI-lab/learn-claude-code</a> <em>(GitHub Trending)</em> <code>🔥 40/100</code></p>
-<p><strong>[19]</strong> <a href="https://github.com/NousResearch/hermes-agent">NousResearch/hermes-agent</a> <em>(GitHub Trending)</em> <code>🔥 40/100</code></p>
-<p><strong>[20]</strong> <a href="https://github.com/browser-use/browser-use">browser-use/browser-use</a> <em>(GitHub Trending)</em> <code>🔥 39/100</code></p>
+<p><span id="ref-1"></span><strong><a href="#ref-1" class="cite-link">[1]</a></strong> <a href="https://github.com/bytedance/deer-flow">bytedance/deer-flow</a> <em>(GitHub Trending)</em> <code>🔥 46/100</code></p>
+<p><span id="ref-2"></span><strong><a href="#ref-2" class="cite-link">[2]</a></strong> <a href="https://huggingface.co/papers/2603.24472">Why Does Self-Distillation (Sometimes) Degrade the Reasoning Capability of LLMs?</a> — Jeonghye Kim, Xufang Luo <em>(HuggingFace Papers)</em> <code>🔥 45/100</code></p>
+<p><span id="ref-3"></span><strong><a href="#ref-3" class="cite-link">[3]</a></strong> <a href="https://huggingface.co/papers/2603.22341">T-MAP: Red-Teaming LLM Agents with Trajectory-aware Evolutionary Search</a> — Hyomin Lee, Sangwoo Park <em>(HuggingFace Papers)</em> <code>🔥 44/100</code></p>
+<p><span id="ref-4"></span><strong><a href="#ref-4" class="cite-link">[4]</a></strong> <a href="https://huggingface.co/papers/2603.24755">SlopCodeBench: Benchmarking How Coding Agents Degrade Over Long-Horizon Iterative Tasks</a> — Gabriel Orlanski, Devjeet Roy <em>(HuggingFace Papers)</em> <code>🔥 43/100</code></p>
+<p><span id="ref-5"></span><strong><a href="#ref-5" class="cite-link">[5]</a></strong> <a href="https://github.com/shareAI-lab/learn-claude-code">shareAI-lab/learn-claude-code</a> <em>(GitHub Trending)</em> <code>🔥 45/100</code></p>
+<p><span id="ref-6"></span><strong><a href="#ref-6" class="cite-link">[6]</a></strong> <a href="https://github.com/ruvnet/ruflo">ruvnet/ruflo</a> <em>(GitHub Trending)</em> <code>🔥 45/100</code></p>
+<p><span id="ref-7"></span><strong><a href="#ref-7" class="cite-link">[7]</a></strong> <a href="https://huggingface.co/papers/2603.24533">UI-Voyager: A Self-Evolving GUI Agent Learning via Failed Experience</a> — Zichuan Lin, Feiyu Liu <em>(HuggingFace Papers)</em> <code>🔥 45/100</code></p>
+<p><span id="ref-8"></span><strong><a href="#ref-8" class="cite-link">[8]</a></strong> <a href="https://www.reddit.com/r/artificial/comments/1s44cgl/marriage_over_100000_down_the_drain_the_ai_users/">Marriage over, €100,000 down the drain: the AI users whose lives were wrecked by delusion</a> — tw1st3d_m3nt4t <em>(r/artificial)</em> <code>🔥 44/100</code></p>
+<p><span id="ref-9"></span><strong><a href="#ref-9" class="cite-link">[9]</a></strong> <a href="https://github.com/langchain-ai/open-swe">langchain-ai/open-swe</a> <em>(GitHub Trending)</em> <code>🔥 44/100</code></p>
+<p><span id="ref-10"></span><strong><a href="#ref-10" class="cite-link">[10]</a></strong> <a href="https://github.com/openai/codex">openai/codex</a> <em>(GitHub Trending)</em> <code>🔥 44/100</code></p>
+<p><span id="ref-11"></span><strong><a href="#ref-11" class="cite-link">[11]</a></strong> <a href="https://huggingface.co/papers/2603.23994">Understanding the Challenges in Iterative Generative Optimization with LLMs</a> — Allen Nie, Xavier Daull <em>(HuggingFace Papers)</em> <code>🔥 43/100</code></p>
+<p><span id="ref-12"></span><strong><a href="#ref-12" class="cite-link">[12]</a></strong> <a href="https://openai.com/index/safety-bug-bounty">Introducing the OpenAI Safety Bug Bounty program</a> <em>(OpenAI Blog)</em> <code>🔥 38/100</code></p>
+<p><span id="ref-13"></span><strong><a href="#ref-13" class="cite-link">[13]</a></strong> <a href="https://machinelearning.apple.com/research/latent-lookahead">Thinking into the Future: Latent Lookahead Training for Transformers</a> <em>(Apple ML Research)</em> <code>🔥 33/100</code></p>
+<p><span id="ref-14"></span><strong><a href="#ref-14" class="cite-link">[14]</a></strong> <a href="https://machinelearning.apple.com/research/scaling-synthetic-task">Scaling Synthetic Task Generation for Agents via Exploration</a> <em>(Apple ML Research)</em> <code>🔥 33/100</code></p>
+<p><span id="ref-15"></span><strong><a href="#ref-15" class="cite-link">[15]</a></strong> <a href="https://simonwillison.net/guides/agentic-engineering-patterns/using-git-with-coding-agents/#atom-everything">Using Git with coding agents</a> <em>(Simon Willison)</em> <code>🔥 31/100</code></p>
+<p><span id="ref-16"></span><strong><a href="#ref-16" class="cite-link">[16]</a></strong> <a href="https://www.latent.space/p/dreamer">Dreamer: the Personal Agent OS — David Singleton</a> <em>(Latent Space)</em> <code>🔥 30/100</code></p>
+<p><span id="ref-17"></span><strong><a href="#ref-17" class="cite-link">[17]</a></strong> <a href="https://huggingface.co/papers/2603.24440">CUA-Suite: Massive Human-annotated Video Demonstrations for Computer-Use Agents</a> — Xiangru Jian, Shravan Nayak <em>(HuggingFace Papers)</em> <code>🔥 41/100</code></p>
+<p><span id="ref-18"></span><strong><a href="#ref-18" class="cite-link">[18]</a></strong> <a href="https://github.com/TauricResearch/TradingAgents">TauricResearch/TradingAgents</a> <em>(GitHub Trending)</em> <code>🔥 40/100</code></p>
+<p><span id="ref-19"></span><strong><a href="#ref-19" class="cite-link">[19]</a></strong> <a href="https://github.com/NousResearch/hermes-agent">NousResearch/hermes-agent</a> <em>(GitHub Trending)</em> <code>🔥 40/100</code></p>
+<p><span id="ref-20"></span><strong><a href="#ref-20" class="cite-link">[20]</a></strong> <a href="https://www.reddit.com/r/MachineLearning/comments/1s3j3ef/d_is_lecuns_1b_seed_round_the_signal_that/">[D] Is LeCun’s $1B seed round the signal that autoregressive LLMs have actually hit a wall for formal reasoning?</a> — Fun-Information78 <em>(r/MachineLearning)</em> <code>🔥 39/100</code></p>
 <h2>📖 Glossary</h2>
-<p><strong>action space</strong> — The set of things an agent is allowed to do. In a terminal, that might mean running shell commands; in a browser, it might mean clicking, typing, and scrolling.</p>
-<p><strong>agent OS</strong> — Short for “agent operating system.” It means a base layer that manages a personal agent across many apps and tasks, the way a normal operating system manages programs and files.</p>
-<p><strong>annotated</strong> — Labeled by humans with useful notes or markings. In a dataset, that usually means people added information about what is happening so a model can learn from it.</p>
-<p><strong>attack surface</strong> — All the places a system can be poked, tricked, or broken. The more tools, permissions, and connections a system has, the larger its attack surface usually is.</p>
-<p><strong>auditability</strong> — How easy it is to inspect what a system did and why. A highly auditable system leaves a clear trail you can review later.</p>
-<p><strong>bash</strong> — A common command-line shell on Unix-like systems. It lets you run commands, chain them together, and automate work with simple scripts.</p>
-<p><strong>bottleneck</strong> — The part of a process that most limits speed or progress. If data collection is the bottleneck, better models alone will not help much.</p>
-<p><strong>branching</strong> — Letting a process split into multiple possible paths instead of following one straight line. In agent work, this can mean trying several approaches at once or keeping backup options open.</p>
-<p><strong>brittle</strong> — Easy to break when conditions change a little. A brittle system may work in a demo but fail when the task gets messy or slightly different.</p>
-<p><strong>bug bounty program</strong> — A program that pays outside researchers for responsibly reporting security problems. It gives people a reason to find and disclose flaws before attackers exploit them.</p>
-<p><strong>Claude-centered multi-agent workflows</strong> — Workflows built around Claude as the main model, with several agents handling different parts of a job. The idea is to divide work while keeping one central model or style of control.</p>
-<p><strong>coding agent</strong> — An agent that writes, edits, runs, and checks code. It usually works with files, tests, terminals, and sometimes issue trackers or pull requests.</p>
-<p><strong>composability</strong> — How easily small tools or parts can be combined into bigger systems. Good composability means you can mix pieces together without lots of custom glue.</p>
-<p><strong>context window</strong> — The amount of text a model can keep in view at once. If a task runs too long, older details may fall out of view.</p>
-<p><strong>cross-app</strong> — Working across multiple applications instead of staying inside one. A cross-app agent might read email, update a spreadsheet, and book something in a browser as part of one task.</p>
-<p><strong>data exfiltration</strong> — Getting private or sensitive data out of a system when it should not leave. This can happen through direct theft or through a model being tricked into revealing it.</p>
-<p><strong>daemon</strong> — A background program that keeps running and handles tasks without you actively opening it each time. The joke in the digest is that a powerful personal agent could turn into an annoying always-on helper.</p>
-<p><strong>demo quality</strong> — Performance that looks good in a short, controlled example. It often says less about real-world usefulness than it first appears.</p>
-<p><strong>epistemic uncertainty</strong> — “Epistemic” means “about what is known.” So this is uncertainty that comes from not knowing enough, and a model showing it is basically saying, “I’m not sure.”</p>
-<p><strong>ergonomics</strong> — How easy and pleasant a tool is to use in practice. Good ergonomics means less friction for the human building or operating the system.</p>
-<p><strong>feasible</strong> — Actually possible to carry out with the time, tools, and rules available. A feasible task is not just interesting in theory; it can really be done.</p>
-<p><strong>feedback loop</strong> — A cycle where the output of one step gets fed back in to guide the next step. Repeated revision based on earlier results is a feedback loop.</p>
-<p><strong>framework theater</strong> — Building or using a fancy-looking framework that adds more appearance than real value. It’s the software version of a lot of ceremony with not much substance.</p>
-<p><strong>future regret</strong> — Problems you create now that make later work harder. In code, this means choices that pass today’s tests but make tomorrow’s changes painful.</p>
-<p><strong>generative optimization</strong> — Repeatedly asking a model to produce improved versions of something, like code or prompts. The hope is that each round makes the result better, though it often does not.</p>
-<p><strong>grounding layer</strong> — The part of a system that connects model outputs to the real environment in a reliable way. For browser agents, this means turning vague intentions into correct actions on actual page elements.</p>
-<p><strong>GUI</strong> — Graphical User Interface. This is the visual part of software with windows, buttons, menus, forms, and other things you click or type into.</p>
-<p><strong>GUI agent</strong> — An agent that interacts with software through the visible interface, like a person would. It clicks buttons, types into fields, and reacts to what appears on screen.</p>
-<p><strong>human-annotated video demonstrations</strong> — Videos of people doing tasks, with human-added labels or notes. These examples help train agents by showing not just the final result but the full process over time.</p>
-<p><strong>IDE</strong> — Integrated Development Environment. This is a coding app that bundles editing, running, debugging, and other developer tools in one place.</p>
-<p><strong>imitate</strong> — To learn by copying examples. For agents, this usually means learning behavior from recordings of humans doing the task.</p>
-<p><strong>internal planning</strong> — A model working out steps inside itself before answering, instead of spelling every step out in text. It is like thinking quietly rather than talking through every thought.</p>
-<p><strong>interactive agents</strong> — Agents that act in an environment and react to what happens next. They do not just answer once; they take steps, observe results, and continue.</p>
-<p><strong>isolation</strong> — Keeping parts of a system separated so mistakes or risky actions do not spread. Sandboxes are one common way to create isolation.</p>
-<p><strong>iterative</strong> — Done through repeated rounds, where each round builds on the last one. Software work is iterative because people keep revising code over time.</p>
-<p><strong>iterative generative optimization</strong> — Repeatedly using a model to revise and improve something over many rounds. The key idea is that the model is not making one attempt; it is trying to refine its own earlier work.</p>
-<p><strong>latent lookahead</strong> — “Latent” means hidden inside the model rather than written out in words, and “lookahead” means thinking ahead. So this is a training idea where the model learns to plan future steps internally.</p>
-<p><strong>latent space</strong> — A hidden internal representation the model uses to organize information. You can think of it as the model’s private workspace, not something humans directly read.</p>
-<p><strong>lightweight</strong> — Simple and not heavy in setup, dependencies, or overhead. A lightweight tool tries to do the job without a lot of extra machinery.</p>
-<p><strong>linear loop</strong> — A simple repeated process that follows one path over and over. It does not branch, pause well, or adapt much to outside events.</p>
-<p><strong>LLM</strong> — Large Language Model. It is a model trained on lots of text so it can generate and work with language.</p>
-<p><strong>long-horizon</strong> — Involving many steps over a long stretch of work. Long-horizon tasks are hard because the system has to stay coherent and useful over time.</p>
-<p><strong>long-horizon iterative tasks</strong> — Tasks that take many rounds and many steps, not one quick answer. Coding on a real project is like this because each change affects later changes.</p>
-<p><strong>lookahead</strong> — Thinking about likely future steps before acting now. It helps avoid choices that seem fine immediately but cause trouble later.</p>
-<p><strong>math performance</strong> — How well a model solves math problems. Researchers often use it as one way to check whether reasoning ability is improving or getting worse.</p>
-<p><strong>memory layer</strong> — The part of an agent system that stores and retrieves useful past information. It helps the agent remember things across steps or sessions.</p>
-<p><strong>message gateway</strong> — A central piece that routes messages between parts of a system. It acts like a traffic manager so components can talk without each one being directly wired to every other one.</p>
-<p><strong>minimal viable agent loop</strong> — The smallest working version of the repeated cycle an agent needs: observe, decide, act, and check what happened. It is the bare-bones setup that still counts as an agent.</p>
-<p><strong>model IQ</strong> — Informal shorthand for how capable the model seems at solving problems. It is not a real IQ score, just a casual way to talk about raw model ability.</p>
-<p><strong>multi-agent</strong> — Using more than one agent in the same system. Different agents may split up tasks, check each other, or specialize in different jobs.</p>
-<p><strong>multi-step vulnerabilities</strong> — Security problems that only appear after a sequence of actions, not from one single prompt or reply. Each step may look harmless on its own, but together they create risk.</p>
-<p><strong>notification daemon</strong> — A joking way to describe a background helper that constantly pops up or interrupts you. The concern is that a personal agent could become noisy and overbearing instead of useful.</p>
-<p><strong>one-shot correctness</strong> — Getting the right answer in a single try. Many benchmarks reward this even though real work often depends more on how well a system handles revision and follow-up.</p>
-<p><strong>open-source</strong> — Software whose code is publicly available for people to inspect, use, and often modify. It usually makes experimentation and reuse easier.</p>
-<p><strong>orchestration</strong> — Coordinating many moving parts so they work together in the right order. In agent systems, this often means managing tools, subtasks, retries, and handoffs.</p>
-<p><strong>parallelism</strong> — Doing multiple pieces of work at the same time. This can speed things up when tasks do not depend on each other.</p>
-<p><strong>personal agent</strong> — An agent meant to work on behalf of one person across their tools, preferences, and ongoing tasks. It is supposed to remember context and act more like a long-term assistant.</p>
-<p><strong>persistent</strong> — Sticking around over time instead of disappearing after one session. Persistent agents or memory can carry information forward from earlier work.</p>
-<p><strong>pipeline</strong> — A chain of steps where the output of one step becomes the input to the next. Training and post-training often involve pipelines with many stages.</p>
-<p><strong>platform layer</strong> — A shared base that other tools or services can build on top of. If agents become a platform layer, they stop being one app and start becoming part of the general computing environment.</p>
-<p><strong>pop-up modal</strong> — A window or box that appears on top of a page and blocks the rest until you deal with it. They are a common source of frustration for browser agents and humans alike.</p>
-<p><strong>post-training</strong> — Work done after the base model has already been trained. This can include fine-tuning, adding preferences, or teaching the model to use tools better.</p>
-<p><strong>prompt injection</strong> — A trick where untrusted text tells the model to ignore its real instructions and follow new ones instead. It is like hiding malicious directions inside content the agent reads.</p>
-<p><strong>prompting/ops patterns</strong> — Reusable ways of working with prompts and operating systems in practice. These are habits or setups that make agents safer or more effective in real use.</p>
-<p><strong>practitioner</strong> — Someone doing the work in practice, not just studying it in theory. A practitioner guide is written for people actually building or using the system.</p>
-<p><strong>pragmatic</strong> — Focused on what works in the real world. A pragmatic tool may not be flashy, but it solves a practical problem.</p>
-<p><strong>prompt</strong> — The instructions or input given to a model. It is the text that tells the model what to do or how to behave.</p>
-<p><strong>prompting</strong> — The practice of shaping model behavior by how you write instructions and examples. Small wording changes can sometimes change results a lot.</p>
-<p><strong>recursive refinement loops</strong> — Repeated cycles where a system keeps trying to improve its own earlier output. “Recursive” here means the process keeps feeding back into itself.</p>
-<p><strong>recovery behavior</strong> — What an agent does after something goes wrong. Good recovery behavior means it can notice the problem, adjust, and continue instead of getting stuck.</p>
-<p><strong>red-teaming</strong> — Deliberately trying to make a system fail or behave dangerously so weaknesses can be found before deployment. It is a structured form of adversarial testing.</p>
-<p><strong>reasoning traces</strong> — The written-out steps that seem to show how a model reached an answer. They can be useful, but shorter or cleaner traces do not always mean better thinking.</p>
-<p><strong>refining</strong> — Improving something through repeated edits. In agent systems, this often means the model keeps revising code, plans, or text based on feedback.</p>
-<p><strong>repo</strong> — Short for “repository.” It is a project folder, usually tracked with version control, that holds code and related files.</p>
-<p><strong>retrieval</strong> — Looking up stored information when it is needed. In agent memory systems, retrieval is how past notes or documents get brought back into the current task.</p>
-<p><strong>RAG</strong> — Retrieval-Augmented Generation. This means a model first fetches relevant information from stored sources and then uses that information while generating an answer.</p>
-<p><strong>ROI</strong> — Return on Investment. It means how much benefit you get compared with the effort, time, or money you put in.</p>
-<p><strong>roll back</strong> — Undo changes and return to an earlier version. This is one of the safest ways to recover from bad agent edits.</p>
-<p><strong>sandbox</strong> — A restricted environment where code or tools can run with limited access. It helps contain damage if something goes wrong.</p>
-<p><strong>security incentives</strong> — Rewards or pressures that encourage people to improve security. Bug bounties are one example because they pay people to report problems.</p>
-<p><strong>self-distillation</strong> — A training method where a model learns from outputs produced by a model, often itself or a close relative. The hope is to make behavior cleaner or cheaper without losing too much ability.</p>
-<p><strong>self-evolving</strong> — Improving over time based on experience rather than staying fixed. In the digest, it refers to an agent that learns from what happened during earlier attempts.</p>
-<p><strong>self-improving agents</strong> — Agents that try to make their own outputs, prompts, or workflows better over repeated rounds. The idea sounds powerful, but the digest points out that it often works poorly.</p>
-<p><strong>serverless</strong> — A way of building software where you do not manage a traditional always-running server yourself. You still run code, but the hosting platform handles most of the infrastructure details.</p>
-<p><strong>shell</strong> — A text-based interface for controlling a computer by typing commands. Developers use it to run programs, move files, and automate tasks.</p>
-<p><strong>shell is a universal action space</strong> — This means the command line already gives developers one common way to do many different things. Because so many tools can be controlled from the shell, an agent can get a lot done without custom interfaces.</p>
-<p><strong>sparse-reward</strong> — A setup where useful feedback is rare. An agent may take many actions before it gets any clear sign that it is on the right track.</p>
-<p><strong>stateful</strong> — Keeping track of what happened before. A stateful task depends on history, not just the current input.</p>
-<p><strong>structured supervision</strong> — Training guidance that is organized in a clear, usable form. Instead of just “this failed,” the system gets information it can learn from.</p>
-<p><strong>subagent</strong> — A smaller agent that handles one part of a larger task. A main agent may delegate work to several subagents.</p>
-<p><strong>super agent</strong> — An informal term for a more general agent that can coordinate many tools, memories, and subtasks over long tasks. It suggests breadth and control rather than one narrow skill.</p>
-<p><strong>surveyed agents</strong> — The set of agent systems examined in a study. “Surveyed” here means the researchers looked across many examples and measured how they performed.</p>
-<p><strong>supervision</strong> — Information used to teach a model what good or bad behavior looks like. Human labels, demonstrations, and feedback are all forms of supervision.</p>
-<p><strong>synthetic tasks</strong> — Artificially created tasks rather than tasks collected directly from real users. They are often used to generate lots of training data cheaply.</p>
-<p><strong>temporally dense</strong> — Packed with important changes over time. In computer-use data, many small moments matter, so a few still images leave out too much.</p>
-<p><strong>terminal-first</strong> — Designed mainly around the command line rather than a graphical app. This often appeals to developers because it fits existing tools and workflows.</p>
-<p><strong>terminal-native</strong> — Built to work naturally in the terminal instead of treating the terminal as an afterthought. It means the terminal is the main home for the tool.</p>
-<p><strong>threat model</strong> — A clear description of what kinds of attacks or failures you are trying to defend against. Good security work starts by deciding what dangers are realistic.</p>
-<p><strong>tool-using systems</strong> — Systems that can call external tools instead of only producing text. For example, they might search the web, run code, or edit files.</p>
-<p><strong>tops out</strong> — Reaches a limit and stops improving much. If a pipeline tops out fast, extra effort gives only small gains.</p>
-<p><strong>trajectory-aware</strong> — Paying attention to the whole sequence of actions, not just one step. A trajectory-aware method judges behavior based on the path the agent took.</p>
-<p><strong>trajectory-aware evolutionary search</strong> — A search method that tries many action sequences, keeps the ones that expose interesting behavior, and mutates them to find better ones. It is “trajectory-aware” because it evaluates full step-by-step paths, not isolated prompts.</p>
-<p><strong>training interactive agents via exploration</strong> — Teaching agents by letting them try actions, discover what works, and turn those experiences into training data. The key idea is learning from doing, not only from fixed examples.</p>
-<p><strong>training pipeline</strong> — The full process used to prepare and improve a model, from collecting data to later tuning steps. It is the assembly line for model improvement.</p>
-<p><strong>trajectory</strong> — The full path of actions and observations an agent goes through while doing a task. It is the story of the attempt, not just the final answer.</p>
-<p><strong>version control</strong> — A system for tracking changes to files over time. It lets you inspect history, compare edits, and return to earlier versions when needed.</p>
-<p><strong>vulnerability</strong> — A weakness that can be exploited to cause harm or unwanted behavior. In agent systems, vulnerabilities can come from prompts, tools, permissions, or workflows.</p>
-<p><strong>workflow</strong> — The sequence of steps used to get work done. In agent systems, a workflow may include planning, tool use, checking results, and handing off subtasks.</p>
+<p><strong>affordance</strong> — A thing an environment makes possible for an agent to do. In a phone app, a button, menu, or text box is an affordance because it gives the agent a possible next move.</p>
+<p><strong>Android</strong> — Google’s mobile operating system used on many phones and tablets. In this digest, it matters because researchers are training and testing agents on real Android apps.</p>
+<p><strong>causal account</strong> — An explanation of what is actually causing an effect, not just what tends to appear alongside it. Here, it means proving whether certain words of uncertainty really help reasoning, rather than merely showing they often show up when reasoning works.</p>
+<p><strong>chain-of-thought exposure</strong> — Showing the model’s full step-by-step internal reasoning in the output. People worry about this because it can reveal messy internal steps that may be unsafe, private, or just bad for the user experience.</p>
+<p><strong>chatbot</strong> — A system built mainly for back-and-forth conversation in text. The digest contrasts this with agents, which also take actions, use tools, and change the outside world.</p>
+<p><strong>compression</strong> — Making something shorter or smaller while trying to keep the important parts. In model training, this often means turning long reasoning traces into shorter ones.</p>
+<p><strong>concise reasoning</strong> — A style of explanation that is short and direct. The paper argues that forcing this style can remove useful signs of doubt and checking.</p>
+<p><strong>correlation</strong> — A pattern where two things tend to happen together. It does not, by itself, prove that one thing causes the other.</p>
+<p><strong>corpus</strong> — A collection of examples used for study or testing. An attack corpus is just a shared set of attack cases researchers can use to compare methods.</p>
+<p><strong>credit assignment</strong> — Figuring out which earlier actions deserve blame or credit for a later result. This is hard in long tasks because success or failure may show up many steps after the important decision.</p>
+<p><strong>curriculum</strong> — A planned sequence of learning experiences that helps a system improve step by step. Here, the idea is to treat failures as useful lessons instead of throwing them away.</p>
+<p><strong>degradation</strong> — A drop in quality or ability. In the first paper, it means the model gets worse at actual reasoning even if its answers look cleaner.</p>
+<p><strong>delayed consequences</strong> — Effects that only show up after several steps. An agent may do something that seems harmless now but causes damage later.</p>
+<p><strong>demonstration</strong> — A worked example showing how to complete a task. These examples are often used to train agents by imitation.</p>
+<p><strong>distribution drift</strong> — A shift between the kinds of examples a system was built on and the kinds it later faces. In synthetic task generation, drift can happen if the generated tasks reflect only what the explorer tends to find.</p>
+<p><strong>entropy</strong> — A measure of how spread out or uncertain something is. In plain terms here, “low-entropy” outputs are very neat, predictable, and confident-looking.</p>
+<p><strong>episode</strong> — One full attempt at a task from start to finish. In agent training, an episode might include all clicks, tool calls, and outcomes for a single run.</p>
+<p><strong>epistemic verbalization</strong> — Words that express uncertainty, checking, or doubt, like “I might be wrong” or “let me verify that.” The paper argues these phrases are sometimes part of the model’s actual problem-solving, not just decoration.</p>
+<p><strong>evolutionary search</strong> — A search method inspired by natural selection. It creates many candidate solutions, keeps the better ones, changes them, and repeats.</p>
+<p><strong>execution path</strong> — The actual sequence of actions a system takes while doing a task. For an agent, that can include prompts, tool calls, reads, writes, and state changes.</p>
+<p><strong>executor</strong> — The part of a system that actually carries out a task or proposed plan. In the AutoPlay pipeline, it is the component that tries to perform the generated task.</p>
+<p><strong>exploitability</strong> — How easy it is for an attack to successfully cause harm. A prompt may be harmful in theory but not very exploitable if it rarely works in practice.</p>
+<p><strong>exploration</strong> — Systematically trying actions to discover what an environment contains and what can be done there. In the digest, exploration comes before task generation so tasks are based on real possibilities.</p>
+<p><strong>failed experience</strong> — Past attempts that did not succeed. The UI-Voyager paper treats these failures as useful training material instead of wasted runs.</p>
+<p><strong>failure mode</strong> — A common way a system breaks or goes wrong. “Looks more confident but reasons worse” is the kind of failure mode the digest is pointing at.</p>
+<p><strong>final trace</strong> — The polished record of reasoning or actions that gets saved or shown at the end. The concern is that these cleaned-up traces may hide the messy but useful parts of thinking.</p>
+<p><strong>Formula 1</strong> — The top level of professional open-wheel car racing. The digest uses it as a metaphor for a demanding environment where weak tests are clearly not enough.</p>
+<p><strong>framework</strong> — A reusable setup or structure for building systems. In this digest, “agent frameworks” means the software setups people use to build and run agents.</p>
+<p><strong>grounded</strong> — Tied to the real environment rather than made up in the abstract. A grounded task is based on things the agent can actually observe and do.</p>
+<p><strong>GUI (Graphical User Interface)</strong> — A visual interface with buttons, menus, windows, and other on-screen elements. A GUI agent operates by interacting with those visible elements.</p>
+<p><strong>harmfulness</strong> — How much damage or bad outcome an action or attack can cause. In red-teaming, it is one of the main things used to score attacks.</p>
+<p><strong>hedge</strong> — To avoid sounding fully certain by adding caution, like saying “probably” or “it seems.” In reasoning, hedging can be useful because it leaves room to revise a mistaken step.</p>
+<p><strong>IID (Independent and Identically Distributed)</strong> — A math phrase meaning each example is treated like a separate draw from the same kind of source. The digest says GUI failures should not be treated this way, because each failed run can teach something specific for the next one.</p>
+<p><strong>intermediate language</strong> — The words used in the middle of a reasoning process before the final answer. The paper argues that uncertain intermediate language may carry real problem-solving value.</p>
+<p><strong>iteration</strong> — One round of a repeated process. In evolutionary search, each iteration tests candidates, keeps some, changes them, and tries again.</p>
+<p><strong>jailbreak prompt</strong> — A prompt designed to push a model past its safety rules or intended behavior. The digest argues that static jailbreaks are too simple for testing full agents.</p>
+<p><strong>latent deliberation channel</strong> — A hidden place or mechanism where a model can work through a problem without showing every step to the user. The idea is to preserve useful internal thinking without exposing messy reasoning directly.</p>
+<p><strong>LLM (Large Language Model)</strong> — A model trained on huge amounts of text to predict and generate language. In this digest, the concern is how training methods change its reasoning behavior.</p>
+<p><strong>long-horizon planning</strong> — Planning that has to stay coherent over many steps instead of just one or two. It is harder because early mistakes can matter much later.</p>
+<p><strong>math-style reasoning</strong> — Problem solving like you see in math tasks, where the model must follow a chain of steps carefully. The paper studies this setting because errors are easier to measure there.</p>
+<p><strong>MCP (Model Context Protocol)</strong> — A standard way for models and tools to exchange information and actions. In the digest, MCP matters because attacks can hide inside tool instructions passed through that connection.</p>
+<p><strong>methodologically</strong> — In terms of how a study was designed and carried out. It signals that the authors are being judged on whether their testing setup is careful and convincing.</p>
+<p><strong>mobile GUI agent</strong> — An agent that operates phone apps by interacting with the visual interface. It has to tap, scroll, type, and navigate screens like a person would.</p>
+<p><strong>mobile-use</strong> — Tasks done on mobile devices such as phones or tablets. In the digest, it refers to benchmark scenarios where agents use mobile apps.</p>
+<p><strong>mutate</strong> — To make small changes to a candidate solution and try the new version. In evolutionary search, attacks are mutated to produce better attacks over time.</p>
+<p><strong>pathology</strong> — A recurring bad pattern in system behavior. The digest uses it to mean a recognizable way models become polished-looking but less dependable.</p>
+<p><strong>poisoned tool result</strong> — A tool output that contains misleading or malicious content meant to trick the agent. The danger is that the agent may trust and act on it.</p>
+<p><strong>post-training</strong> — The extra training done after a base model is first built. This stage often teaches the model to follow instructions, use tools, or behave in a preferred style.</p>
+<p><strong>preference tuning</strong> — Training a model to produce outputs people tend to like more. This can improve style and obedience, but it may also reward answers that sound confident rather than being correct.</p>
+<p><strong>prompt injection</strong> — A trick where malicious instructions are hidden inside content the agent reads, such as a webpage or tool output. The agent then follows those hidden instructions as if they were legitimate.</p>
+<p><strong>prompt engineering</strong> — Carefully writing and structuring prompts to get better behavior from a model. The digest warns that prompts asking for very short reasoning may hurt performance in some tasks.</p>
+<p><strong>reasoning trace</strong> — A record of the steps a model appears to take while working toward an answer. Researchers study these traces to see how training changes the model’s problem-solving style.</p>
+<p><strong>red-teaming</strong> — Deliberately trying to break a system to find weaknesses before real attackers do. For agents, this means testing not just what they say but what they do over time.</p>
+<p><strong>response compression</strong> — Making model outputs shorter while trying to keep the same meaning or quality. The paper argues this can accidentally strip out useful uncertainty and checking.</p>
+<p><strong>reward signal</strong> — The feedback that tells a learning system whether an action was good or bad. In GUI tasks, this signal is often weak or arrives late.</p>
+<p><strong>robust</strong> — Able to keep working well even when conditions are messy or unexpected. A less robust agent may fail badly once the environment changes a little.</p>
+<p><strong>scratchpad</strong> — A temporary workspace where a model can write down partial thoughts, checks, or notes while solving a problem. The digest suggests preserving something like this instead of only keeping polished final answers.</p>
+<p><strong>self-distillation</strong> — Training a model on outputs produced by another model, often a stronger version of itself or its own earlier outputs. The goal is usually to make the student model cheaper or cleaner, but the paper shows this can hurt reasoning.</p>
+<p><strong>self-evolving</strong> — Improving over time using the system’s own past attempts rather than only outside labels from humans. In UI-Voyager, the agent learns from its own failures.</p>
+<p><strong>self-improvement loop</strong> — A repeated process where a model generates data, learns from it, and then uses the improved version to generate more data. This can scale training, but it can also reinforce bad habits.</p>
+<p><strong>sparse-reward</strong> — A setting where useful feedback is rare. In GUI tasks, the agent may take many actions before learning whether it was on the right track.</p>
+<p><strong>sufficient statistic</strong> — A compressed summary that keeps all the important information needed for a purpose. The digest says token count is not a sufficient statistic for thought, meaning shortness alone does not tell you whether reasoning quality was preserved.</p>
+<p><strong>surface confidence</strong> — The appearance of certainty in the wording, regardless of whether the underlying reasoning is strong. A model can sound very sure while actually thinking less carefully.</p>
+<p><strong>synthetic task generation</strong> — Creating training tasks automatically instead of collecting them all from people. This is useful for scale, but the generated tasks can be biased toward what the system already knows how to explore.</p>
+<p><strong>teacher model</strong> — The model whose outputs are used as examples during distillation. The student learns from the teacher’s answers and traces.</p>
+<p><strong>theorem prover</strong> — A system designed to prove mathematical statements by following strict logical steps. The digest uses it as a contrast to a model that merely looks impressive.</p>
+<p><strong>threat model</strong> — A clear description of what kinds of attacks or failures you are trying to defend against. For agents, a good threat model has to include multi-step actions and tool use, not just single prompts.</p>
+<p><strong>tool-using agent</strong> — An agent that can call outside tools like browsers, code runners, or databases while doing a task. This makes it more capable, but also creates more ways for attacks to work.</p>
+<p><strong>trace distillation</strong> — Distillation that trains a model on reasoning traces, not just final answers. The concern is that this may preserve polished-looking traces while losing the useful messy parts.</p>
+<p><strong>trajectory-aware</strong> — Designed to pay attention to the full sequence of steps taken over time, not just the final result. In T-MAP, attacks are judged partly by the path they cause the agent to follow.</p>
+<p><strong>trajectory-level</strong> — At the level of the whole action sequence from start to finish. A trajectory-level evaluation asks what the agent actually did across many steps.</p>
+<p><strong>transfer study</strong> — A test of whether a method that works in one setting also works in another. Here, it means checking whether attacks or learned skills carry over across different agent setups.</p>
+<p><strong>Ubuntu</strong> — A popular Linux-based operating system often used on desktops and servers. In the digest, it is one of the computer environments used for agent tasks.</p>
+<p><strong>uncertainty expression</strong> — Any wording that shows the model is not fully sure, such as “maybe,” “I should check,” or “this assumption could fail.” The paper argues these expressions can help the model reason more carefully.</p>
+<p><strong>UX (User Experience)</strong> — How it feels for a person to use a product. The digest raises the problem that visible uncertainty may help reasoning but may also make the product feel messy or awkward.</p>
+<p><strong>verifier</strong> — A component that checks whether a produced answer, action, or demonstration is valid. In synthetic task pipelines, the verifier helps filter out bad generated examples.</p>
   </div>
 
   <!-- Footer -->
   <div class="footer">
-    Generated 2026-03-27 14:51 UTC<br>
+    Generated 2026-03-27 16:55 UTC<br>
     Curated by GPT · Delivered by <a href="https://github.com/your-username/ai-weekly-digest">AI Weekly Digest</a>
   </div>
 
