@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Weekly Digest</title>
+<style>
+  /* ── Reset & base ─────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    font-family: 'Charter', 'Georgia', 'Times New Roman', serif;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0;
+    background: #f5f4f0;
+    color: #1d1d1f;
+    line-height: 1.72;
+    font-size: 17px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Masthead ─────────────────────────────────────────────── */
+  .masthead {
+    background: #1a1a2e;
+    padding: 44px 40px 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .masthead::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #f72585, #7209b7, #3a0ca3, #4361ee, #4cc9f0);
+  }
+  .masthead .issue-label {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #4cc9f0;
+    margin-bottom: 12px;
+  }
+  .masthead h1 {
+    font-size: 36px;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 6px 0;
+    letter-spacing: -0.5px;
+    line-height: 1.15;
+  }
+  .masthead .subtitle {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-size: 14px;
+    color: rgba(255,255,255,0.55);
+    margin: 0;
+  }
+  .masthead .stats {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+  }
+  .masthead .stat {
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+  }
+  .masthead .stat strong {
+    color: rgba(255,255,255,0.85);
+    font-weight: 600;
+    font-size: 18px;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  /* ── Content body ─────────────────────────────────────────── */
+  .content {
+    background: #ffffff;
+    padding: 40px 40px 48px;
+    border-radius: 0 0 2px 2px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+
+  /* Section headings: emoji + title with accent left border */
+  .content h2 {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #3a0ca3;
+    margin: 40px 0 16px;
+    padding: 10px 0 10px 16px;
+    border-left: 4px solid;
+    border-image: linear-gradient(180deg, #f72585, #4361ee) 1;
+    background: linear-gradient(90deg, rgba(67,97,238,0.04), transparent);
+  }
+  .content h2:first-child { margin-top: 0; }
+
+  .content h3 {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1d1d1f;
+    margin: 24px 0 8px;
+    line-height: 1.3;
+  }
+
+  /* Body text */
+  .content p { margin: 10px 0; }
+
+  .content a {
+    color: #4361ee;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(67,97,238,0.3);
+    transition: border-color 0.15s;
+  }
+  .content a:hover { border-bottom-color: #4361ee; }
+
+  .content ul { padding-left: 20px; margin: 8px 0; }
+  .content li { margin-bottom: 10px; }
+  .content strong { color: #1d1d1f; font-weight: 600; }
+
+  /* Blockquotes — "professor's aside" */
+  .content blockquote {
+    margin: 20px 0;
+    padding: 16px 20px;
+    background: #faf8ff;
+    border-left: 3px solid #7209b7;
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+    color: #444;
+  }
+
+  /* Code */
+  .content code {
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    background: #f0eff4;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 0.88em;
+    color: #7209b7;
+  }
+
+  /* Buzz score badges — code elements containing the fire emoji */
+  .content code:has(~ *), /* fallback */
+  .content p code,
+  .content li code {
+    /* Styles applied via the generic code rule above work fine */
+  }
+
+  /* ── References section ───────────────────────────────────── */
+  .content h2 + p > strong:first-child {
+    /* Reference entries like **[1]** Title */
+  }
+
+  /* ── Glossary callout ─────────────────────────────────────── */
+  .content h2:last-of-type {
+    /* Detect the glossary section (last h2) and restyle it */
+  }
+
+  /* Glossary visual treatment: everything after the glossary heading */
+  .glossary-wrapper {
+    margin-top: 40px;
+    padding: 28px 32px;
+    background: linear-gradient(135deg, #f8f7ff 0%, #f0f4ff 100%);
+    border: 1px solid rgba(67,97,238,0.15);
+    border-radius: 12px;
+  }
+  .glossary-wrapper h2 {
+    margin-top: 0 !important;
+    padding-left: 0 !important;
+    border-left: none !important;
+    border-image: none !important;
+    background: none !important;
+    color: #3a0ca3;
+    font-size: 14px;
+  }
+  .glossary-wrapper p {
+    font-size: 15px;
+    line-height: 1.65;
+    margin: 6px 0;
+  }
+
+  /* ── Two-Week Recap section ───────────────────────────────── */
+  /* Subtle background shift for the recap section */
+  .content h2 + .recap-section,
+  .content .recap-section {
+    background: linear-gradient(90deg, rgba(76,201,240,0.04), transparent);
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin: 8px -16px;
+  }
+
+  /* ── Clickable citation links ────────────────────────────── */
+  .content a.cite-link {
+    color: #4361ee;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: none;
+    font-size: 0.85em;
+    vertical-align: super;
+    line-height: 0;
+    padding: 0 1px;
+  }
+  .content a.cite-link:hover {
+    color: #f72585;
+    border-bottom: none;
+  }
+
+  /* Smooth scroll for anchor links */
+  html { scroll-behavior: smooth; }
+
+  /* Highlight target when jumping to a reference */
+  :target {
+    background: rgba(67, 97, 238, 0.08);
+    border-radius: 4px;
+    transition: background 0.3s;
+  }
+
+  /* ── Expandable deep dive sections ─────────────────────── */
+  .content details {
+    margin: 16px 0;
+    padding: 0;
+    border: 1px solid rgba(58, 12, 163, 0.12);
+    border-radius: 8px;
+    background: #faf8ff;
+    overflow: hidden;
+  }
+  .content details summary {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #3a0ca3;
+    cursor: pointer;
+    padding: 12px 16px;
+    background: linear-gradient(90deg, rgba(114, 9, 183, 0.04), transparent);
+    list-style: none;
+    user-select: none;
+  }
+  .content details summary::-webkit-details-marker { display: none; }
+  .content details summary::before {
+    content: '▶ ';
+    font-size: 10px;
+    margin-right: 6px;
+    transition: transform 0.2s;
+    display: inline-block;
+  }
+  .content details[open] summary::before {
+    transform: rotate(90deg);
+  }
+  .content details[open] summary {
+    border-bottom: 1px solid rgba(58, 12, 163, 0.08);
+    margin-bottom: 0;
+  }
+  .content details > *:not(summary) {
+    padding: 4px 16px;
+    font-size: 15px;
+    line-height: 1.65;
+  }
+  .content details p {
+    margin: 8px 0;
+  }
+
+  /* ── Buzz explanation callout ───────────────────────────── */
+  .content em:last-child,
+  .content p > em:only-child {
+    /* Buzz check lines are in italics at the end of each item */
+  }
+  .content p em {
+    color: #666;
+    font-size: 0.92em;
+  }
+
+  /* ── Horizontal rule ──────────────────────────────────────── */
+  .content hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #ddd, transparent);
+    margin: 36px 0;
+  }
+
+  /* ── Footer ───────────────────────────────────────────────── */
+  .footer {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    text-align: center;
+    padding: 24px 40px;
+    font-size: 12px;
+    color: #999;
+    line-height: 1.6;
+  }
+  .footer a { color: #4361ee; text-decoration: none; }
+
+  /* ── Responsive ───────────────────────────────────────────── */
+  @media (max-width: 600px) {
+    body { font-size: 16px; }
+    .masthead { padding: 28px 20px 24px; }
+    .masthead h1 { font-size: 26px; }
+    .masthead .stats { flex-wrap: wrap; gap: 12px; }
+    .content { padding: 24px 20px 32px; }
+    .content h2 { font-size: 13px; }
+    .glossary-wrapper { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Masthead -->
+  <div class="masthead">
+    <div class="issue-label">Weekly Briefing</div>
+    <h1>AI Weekly Digest</h1>
+    <p class="subtitle">May 11, 2026 — May 18, 2026</p>
+    <div class="stats">
+      <div class="stat">
+        <strong>6</strong>
+        sources scanned
+      </div>
+      <div class="stat">
+        <strong>20</strong>
+        items curated
+      </div>
+    </div>
+  </div>
+
+  <!-- Digest content -->
+  <div class="content">
+    <h2>🧭 This Week in AI</h2>
+<h3>Agents are shifting from stateless loops to persistent, skill-based systems</h3>
+<p>A clear pattern this week is the move away from “single prompt + tool loop” agents toward architectures with reusable skills, persistent memory, and accumulated procedural state. Solvita explicitly frames competitive programming gains as agentic evolution rather than one-shot inference, preserving and refining problem-solving traces across tasks <a href="#ref-1" class="cite-link">[1]</a>; MMSkills does the same for visual agents by treating multimodal skills as reusable substrates instead of plain prompt snippets <a href="#ref-7" class="cite-link">[7]</a>. On the tooling side, Anthropic’s skills repo, third-party skill registries, Composio, Memori, and broader agent stacks like PraisonAI and Personal AI Infrastructure all point to the same convergence: capability is increasingly being packaged as dynamically loadable skills plus execution memory, not just a larger base model <a href="#ref-9" class="cite-link">[9]</a><a href="#ref-14" class="cite-link">[14]</a><a href="#ref-17" class="cite-link">[17]</a><a href="#ref-19" class="cite-link">[19]</a><a href="#ref-16" class="cite-link">[16]</a><a href="#ref-11" class="cite-link">[11]</a>.</p>
+<p><strong>For humans:</strong> AI builders are realizing that asking a model to “just figure it out” every time is like hiring a smart contractor with no notes, no playbook, and no memory of yesterday. The new approach is to give the system a toolbox, a notebook, and a set of repeatable habits it can reuse. In practice, this means less magic and more engineering: AI agents are starting to look more like software systems than chatbots.</p>
+<h3>Reliability failures are increasingly about long-horizon delegation, not raw task competence</h3>
+<p>The most important reliability signal this week is that agents can look competent locally while still failing the user globally. Microsoft’s follow-up on AI delegation emphasizes the gap between benchmark success and long-horizon reliability in delegated workflows, especially when systems must preserve document integrity and intent over multi-step collaboration <a href="#ref-2" class="cite-link">[2]</a>. SocialReasoning-Bench sharpens this further: agents can execute negotiations and coordination tasks fluently yet still fail to advance the user’s actual interests, even under explicit optimization instructions <a href="#ref-3" class="cite-link">[3]</a>. This is a broader multi-week trend: evaluation is moving from “can it complete steps?” to “did it protect the user’s objective over time and under social ambiguity?”</p>
+<p><strong>For humans:</strong> The issue is no longer just whether the AI can do each individual chore. It’s whether, after a long chain of actions, it still did the <em>right</em> thing for you rather than merely something plausible-looking. Think of an assistant who books meetings and answers emails smoothly, but keeps subtly making choices that are convenient for the assistant rather than good for your career.</p>
+<h3>Small models are getting surprisingly far when the workflow is disciplined</h3>
+<p>There is growing practical evidence that strong agent performance is increasingly a systems problem, not only a frontier-model problem. Community results around small coding agents and structured local workflows suggest that careful task decomposition, constrained tool use, context budgeting, and explicit validation can push 4B-class models much further than naïve autonomous loops would imply <a href="#ref-4" class="cite-link">[4]</a><a href="#ref-13" class="cite-link">[13]</a>. The same pattern shows up in guardrail tooling like react-doctor and in OpenAI’s Windows Codex sandbox work: once agents are embedded in constrained execution environments with narrow affordances, verification hooks, and safer defaults, weaker models become more usable and stronger models become less brittle <a href="#ref-10" class="cite-link">[10]</a><a href="#ref-20" class="cite-link">[20]</a>.</p>
+<p><strong>For humans:</strong> This week’s lesson is that a smaller AI with a good checklist can outperform a bigger AI that’s allowed to improvise wildly. It’s the difference between an average pilot with instruments and procedures versus a brilliant pilot flying in bad weather by instinct alone. For teams, this means workflow design is becoming as important as model choice.</p>
+<h3>Reasoning progress is coming from better search and credit assignment, but interpretability remains unsettled</h3>
+<p>On the modeling side, the interesting motion is not “models suddenly understand,” but more targeted improvements in how we train and search over reasoning trajectories. Hölder Policy Optimisation revisits a core weakness in GRPO-style updates—how sequence-level advantages are mapped back to token-level learning signals—and proposes a more principled aggregation scheme <a href="#ref-6" class="cite-link">[6]</a>, while strategy-guided exploration for RLVR attacks the exploration bottleneck directly by nudging models beyond their current trajectory comfort zone <a href="#ref-15" class="cite-link">[15]</a>. Solvita adds an inference-time analogue via evolutionary search over agent behavior <a href="#ref-1" class="cite-link">[1]</a>. Together these reinforce that reasoning gains are still being bought through better exploration, selection, and optimization over traces—not by resolving the longstanding conceptual question of whether the model “understands” in any human-like sense <a href="#ref-8" class="cite-link">[8]</a>.</p>
+<p><strong>For humans:</strong> AI is getting better at hard problems less because it has achieved human-style insight and more because we’re getting better at making it try, compare, and refine many candidate paths. It’s a bit like improving a chess engine by upgrading its search strategy, not by claiming it now “thinks like a grandmaster.” So when people say models are reasoning better, the practical takeaway is real performance gains—but not necessarily clearer evidence of deep understanding.</p>
+<h3>The agent frontier is becoming multimodal and environment-native, which raises the stakes for control surfaces</h3>
+<p>UI-TARS, UI-TARS-desktop, and MMSkills all underscore a shift from text-only agents toward systems that operate directly over desktops, GUIs, and visual environments <a href="#ref-5" class="cite-link">[5]</a><a href="#ref-18" class="cite-link">[18]</a><a href="#ref-7" class="cite-link">[7]</a>. This expands the action space dramatically: agents are no longer just generating code or prose, but perceiving screens, manipulating interfaces, and chaining actions in partially observed environments. As that happens, infrastructure concerns like sandboxing, authentication, tool scoping, and persistent state stop being ancillary and become part of the model’s effective architecture <a href="#ref-20" class="cite-link">[20]</a><a href="#ref-19" class="cite-link">[19]</a><a href="#ref-17" class="cite-link">[17]</a>. The practical implication is that multimodal agency is not just a capability upgrade; it is also a larger failure surface.</p>
+<p><strong>For humans:</strong> We’re moving from AI that writes instructions to AI that can click buttons and use software on its own. That’s powerful, but it also means mistakes can happen in the real working environment instead of staying inside a chat window. Once an AI can operate your desktop, the safety rails around it matter as much as the intelligence inside it.</p>
+<p><strong>The takeaway this week: treat agent quality as an architecture problem—skills, memory, constraints, and evaluations for user-interest preservation now matter at least as much as the base model.</strong></p>
+<hr />
+<h2>🔥 The Big One</h2>
+<p><strong>SocialReasoning-Bench: Measuring whether AI agents act in users’ best interests</strong> <code>🔥 38/100</code></p>
+<p>The core claim is that current frontier agents can often complete delegated social tasks, but they do not reliably optimize for the user’s interests, even when explicitly instructed to do so <a href="#ref-3" class="cite-link">[3]</a>. Microsoft’s benchmark is aimed at a specific gap: task completion is not the same as acting as a good delegate. In their framing, agents in calendars, negotiations, and other multi-party settings need “social reasoning” — modeling user preferences, counterparty incentives, what to reveal, what to withhold, and when to push back <a href="#ref-3" class="cite-link">[3]</a>.</p>
+<p>Methodologically, SocialReasoning-Bench evaluates agents in two simulated settings: <strong>Calendar Coordination</strong> and <strong>Marketplace Negotiation</strong> <a href="#ref-3" class="cite-link">[3]</a>. The benchmark scores both <strong>outcome optimality</strong> and <strong>due diligence</strong>. Outcome optimality asks whether the agent secured a good result for the user; due diligence asks whether it followed a competent process rather than lazily accepting the first workable option <a href="#ref-3" class="cite-link">[3]</a>. The blog also ties this to prior internal findings: in an earlier simulated marketplace, agents accepted the first proposal they received <strong>up to 93% of the time</strong> without exploring alternatives <a href="#ref-3" class="cite-link">[3]</a>. That number matters because it operationalizes the failure mode: these systems are not merely making occasional bad calls, they are systematically under-searching in social environments.</p>
+<p>One concrete result from the post is exactly that <strong>first-offer acceptance rate of up to 93%</strong> in prior marketplace simulations, which the authors use as motivation for the benchmark <a href="#ref-3" class="cite-link">[3]</a>. The benchmark’s headline qualitative result is a “stable pattern across models”: agents usually finish the task, but often leave value on the table by accepting suboptimal meeting times or poor deals <a href="#ref-3" class="cite-link">[3]</a>. Prompting helps, but the authors explicitly say it is <strong>not enough</strong>; even with direct instructions to optimize for user interest, performance remains “well below what a trustworthy delegate should achieve” <a href="#ref-3" class="cite-link">[3]</a>.</p>
+<p>The source’s own framing is clear: the authors argue this matters because AI agents are moving from isolated Q&amp;A into <strong>principal-agent relationships</strong> where the model acts on the user’s behalf in social systems <a href="#ref-3" class="cite-link">[3]</a>. In that regime, competence without advocacy is not enough. An agent that politely completes the workflow while repeatedly conceding value is not aligned with the user in any useful sense.</p>
+<p>Limitations: the blog summary does not provide the full benchmark tables, model-by-model breakdowns, or exact scoring formulas in the text you shared, so the evidence here is directional rather than fully auditable from the post alone <a href="#ref-3" class="cite-link">[3]</a>. My take: this is one of the more important eval directions right now because it targets a real deployment failure mode that standard agent benchmarks mostly miss. The open question is whether this can be fixed with better planning/search and explicit utility modeling, or whether today’s models lack the stable situational reasoning needed for delegated negotiation.</p>
+<p><em>Buzz: 38/100 — moderate traction (30); found in Microsoft Research Blog only. Would need pickup from additional platforms (Reddit, HF, blogs) to score higher.</em></p>
+<h2>🤖 Agent Behavior &amp; Architecture</h2>
+<p><strong>Solvita: Enhancing Large Language Models for Competitive Programming via Agentic Evolution</strong> <code>🔥 43/100</code></p>
+<p>The core claim is that competitive-programming agents improve when they retain and evolve problem-solving experience across tasks instead of treating each problem as stateless one-off inference <a href="#ref-1" class="cite-link">[1]</a>. The paper positions existing multi-agent coding systems as limited because they rely on static retrieval and discard debugging traces and successful strategies after each task <a href="#ref-1" class="cite-link">[1]</a>.</p>
+<p>Method: Solvita is presented as an <strong>agentic evolution</strong> framework for coding. The key architectural idea, from the summary, is persistent accumulation of prior problem-solving and debugging experience, which is then reused on future tasks <a href="#ref-1" class="cite-link">[1]</a>. The exact implementation details in the provided snippet are truncated, so I can only safely report the high-level mechanism: unlike static retrieval, Solvita appears to maintain and evolve a library of useful experiences/strategies over time <a href="#ref-1" class="cite-link">[1]</a>. That makes it more like a learned external memory plus iterative self-improvement loop than a plain multi-agent scaffold.</p>
+<p>Concrete result: the item is highly relevant, but the provided text does not include a benchmark number or comparison table, so I can’t quote one without inventing it <a href="#ref-1" class="cite-link">[1]</a>.</p>
+<p>Source framing: the authors argue the main value is reliability on “hard competitive programming,” where rigorous reasoning and debugging matter and stateless systems fail to capitalize on prior work <a href="#ref-1" class="cite-link">[1]</a>.</p>
+<p>Limitations: the summary is cut off before the architecture and results section, so the evidence available here is incomplete <a href="#ref-1" class="cite-link">[1]</a>. My take: the direction is plausible and aligned with what we see in practical coding agents — persistent error libraries and strategy reuse help — but I’d want to inspect how they prevent memory contamination and overfitting to benchmark styles.</p>
+<p><em>Buzz: 43/100 — 14 HuggingFace upvotes; found in HuggingFace Papers only. Would need pickup from additional platforms (Reddit, HF, blogs) to score higher.</em></p>
+<p><strong>UI-TARS-desktop</strong> <code>🔥 44/100</code></p>
+<p>The core claim is that ByteDance now has an open-source <strong>desktop multimodal agent stack</strong> that brings GUI-native control to local machines, built around the UI-TARS model family <a href="#ref-5" class="cite-link">[5]</a>. This is not just a model release; it is an agent product layer with desktop execution, local operation, and surrounding infrastructure <a href="#ref-5" class="cite-link">[5]</a>.</p>
+<p>Method: the repo describes <strong>TARS</strong> as a multimodal agent stack shipping two projects: <strong>Agent TARS</strong> and <strong>UI-TARS-desktop</strong> <a href="#ref-5" class="cite-link">[5]</a>. Agent TARS targets terminal, browser, computer, and product workflows through multimodal LLMs plus integrations with <strong>MCP tools</strong> <a href="#ref-5" class="cite-link">[5]</a>. UI-TARS-desktop is the native desktop application for GUI-agent behavior based on the separate <strong>UI-TARS</strong> model repo <a href="#ref-5" class="cite-link">[5]</a>. The architecture, as described in the README, is stack-oriented rather than a single model trick: vision-capable model + GUI action layer + CLI/Web UI surfaces + MCP integrations <a href="#ref-5" class="cite-link">[5]</a>.</p>
+<p>Concrete result: the strongest concrete number here is adoption, not benchmarking: the repo gained <strong>2,563 GitHub stars this week</strong> <a href="#ref-5" class="cite-link">[5]</a>.</p>
+<p>Source framing: the repo frames this as a workflow “closer to human-like task completion” by combining multimodal LLMs with real-world tool integrations <a href="#ref-5" class="cite-link">[5]</a>.</p>
+<p>Limitations: the README excerpt gives product architecture, not hard evals, so it is difficult to assess reliability, latency, or failure recovery from the repo text alone <a href="#ref-5" class="cite-link">[5]</a>. My take: open desktop agents are becoming real infrastructure, but GUI-native systems still fail in brittle ways around coordinate grounding, hidden state, and UI changes. I would treat this as promising infra, not solved autonomy.</p>
+<p><em>Buzz: 44/100 — 2,563 GitHub stars gained this week; found in GitHub Trending only. Would need pickup from additional platforms (Reddit, HF, blogs) to score higher.</em></p>
+<p><strong>Memori: agent-native memory infrastructure</strong> <code>🔥 38/100</code></p>
+<p>The core claim is that agent memory should be built from <strong>what agents do</strong>, not just what they say, and that production agent systems need structured persistent state rather than chat-history stuffing <a href="#ref-17" class="cite-link">[17]</a>. This is squarely in the “agent architecture” bucket because it treats execution traces as first-class memory objects <a href="#ref-17" class="cite-link">[17]</a>.</p>
+<p>Method: Memori is an <strong>LLM-agnostic memory layer</strong> that turns agent execution and conversation into structured, persistent state <a href="#ref-17" class="cite-link">[17]</a>. The repo emphasizes compatibility across datastores, frameworks, and existing software stacks, with both cloud and SDK-based integration <a href="#ref-17" class="cite-link">[17]</a>. The key architectural stance is that memory should be execution-aware and externalized, not embedded only in prompt context. That matters for long-horizon agents because actions, tool outputs, and state transitions often matter more than dialogue summaries <a href="#ref-17" class="cite-link">[17]</a>.</p>
+<p>Concrete result: the repo gained <strong>323 GitHub stars this week</strong> <a href="#ref-17" class="cite-link">[17]</a>.</p>
+<p>Source framing: the maintainers argue that “memory from what agents do, not just what they say” is the right abstraction for production systems <a href="#ref-17" class="cite-link">[17]</a>. That is a useful corrective to the current wave of simplistic vector-memory add-ons.</p>
+<p>Limitations: the provided content does not include benchmark numbers from the linked benchmark page, so there is no hard evidence here about retrieval quality, latency, or downstream task improvement <a href="#ref-17" class="cite-link">[17]</a>. My take: this is the right systems direction. The hard part is schema design and memory write policies; most agent-memory systems degrade when they over-record low-value events or fail to reconcile conflicting state.</p>
+<p><em>Buzz: 38/100 — 323 GitHub stars gained this week; found in GitHub Trending only. Would need pickup from additional platforms (Reddit, HF, blogs) to score higher.</em></p>
+<h2>📝 Prompting &amp; Reasoning</h2>
+<p><strong>Anthropic skills repo</strong> <code>🔥 40/100</code></p>
+<p>The core claim is that <strong>skills</strong> — packaged folders of instructions, scripts, and resources loaded dynamically — are a practical way to improve agent performance on specialized tasks without retraining the base model <a href="#ref-9" class="cite-link">[9]</a>. This is one of the clearest real-world prompt-engineering artifacts this week because it exposes how Anthropic operationalizes reusable task specialization <a href="#ref-9" class="cite-link">[9]</a>.</p>
+<p>Method: each skill is a self-contained folder with a <code>SKILL.md</code> file containing instructions and metadata that Claude uses <a href="#ref-9" class="cite-link">[9]</a>. Skills can also include scripts and resources, so the unit is broader than a prompt template. Anthropic’s own examples span creative tasks, web-app testing, MCP server generation, and enterprise workflows <a href="#ref-9" class="cite-link">[9]</a>. The repo also includes the document creation/editing skills behind Claude’s file capabilities for <strong>DOCX, PDF, PPTX, and XLSX</strong> <a href="#ref-9" class="cite-link">[9]</a>. In practice, this looks like modular prompt-programming plus tool affordances and domain resources.</p>
+<p>Concrete result: the repo gained <strong>4,823 GitHub stars this week</strong> <a href="#ref-9" class="cite-link">[9]</a>.</p>
+<p>Source framing: Anthropic frames skills as a way to teach Claude repeatable workflows like brand-compliant document generation, organization-specific data analysis, and automation patterns <a href="#ref-9" class="cite-link">[9]</a>. The implied claim is that dynamic loading of targeted instructions beats trying to keep every workflow in the base system prompt.</p>
+<p>Limitations: the repo is a pattern library, not an eval paper, so there are no quantitative gains reported in the excerpt <a href="#ref-9" class="cite-link">[9]</a>. My take: skills are probably the most important near-term prompt-engineering abstraction because they force decomposition and context scoping. The risk is prompt sprawl: too many loosely validated skills can create hidden interactions and brittle behavior.</p>
+<p><em>Buzz: 40/100 — 4,823 GitHub stars gained this week; found in GitHub Trending only. Would need pickup from additional platforms (Reddit, HF, blogs) to score higher.</em></p>
+<p><strong>The power of structured workflows and small local models</strong> <code>🔥 39/100</code></p>
+<p>The core claim from this community post is that a lot of “agent capability” comes from workflow structure rather than raw model size, and that small local models can perform surprisingly well when wrapped in disciplined loops and tools <a href="#ref-13" class="cite-link">[13]</a>.</p>
+<p>Method: the author describes a “very basic home-rolled agent loop with a handful of tools” that worked better than expected despite being crude <a href="#ref-13" class="cite-link">[13]</a>. The post is community discussion rather than a formal release, so the method is not specified with the precision of a paper, but the salient idea is structured decomposition: constrain the model with explicit workflow stages, tool interfaces, and likely narrower context windows <a href="#ref-13" class="cite-link">[13]</a>. This lines up with the broader trend that orchestration often substitutes for model scale in practical agent setups.</p>
+<p>Concrete result: the post reports <strong>117 Reddit upvotes and 39 comments</strong> as traction, but no benchmark number in the provided summary <a href="#ref-13" class="cite-link">[13]</a>.</p>
+<p>Source framing: the author’s point is that local-model agents are often underestimated because people compare them in poorly structured, GPT-4/Claude-style agent shells that assume large-model competence <a href="#ref-13" class="cite-link">[13]</a>.</p>
+<p>Limitations: this is anecdotal and missing hard evals <a href="#ref-13" class="cite-link">[13]</a>. My take: the claim is directionally right. Small models benefit disproportionately from workflow constraints because they have less slack for implicit planning. But many such demos fail to generalize once tasks become less templated or require robust recovery from tool errors.</p>
+<p><em>Buzz: 39/100 — 117 Reddit upvotes, 39 comments; found in r/LocalLLaMA only. Would need pickup from additional platforms (Reddit, HF, blogs) to score higher.</em></p>
+<h2>⚠️ Limitations &amp; Failure Modes</h2>
+<p><strong>Further Notes on AI Delegation and Long-Horizon Reliability</strong> <code>🔥 38/100</code></p>
+<p>The core claim is not that AI delegation is hopeless, but that long-horizon delegated workflows can accumulate <strong>semantic fidelity degradation</strong> over repeated edits, and we need diagnostics that measure this failure mode directly <a href="#ref-2" class="cite-link">[2]</a>. This is a clarification post about Microsoft’s earlier “LLMs Corrupt Your Documents When You Delegate” work <a href="#ref-2" class="cite-link">[2]</a>.</p>
+<p>Method: the evaluation uses <strong>chained transformation-and-inversion tasks</strong> over artifacts like documents, spreadsheets, code, and structured files <a href="#ref-2" class="cite-link">[2]</a>. The key methodological detail is <strong>domain-specific semantic parsing</strong>: they score whether underlying meaning is preserved, not whether formatting or style changed <a href="#ref-2" class="cite-link">[2]</a>. That is a better fit for delegated editing than string matching. The benchmark focuses on a narrow interaction pattern they call <strong>delegated work</strong>, where the user gives the system a multi-step modification task with limited human verification between steps <a href="#ref-2" class="cite-link">[2]</a>.</p>
+<p>Concrete result: the post does not include a numeric headline in the provided excerpt, but it explicitly reports observing fidelity degradation across repeated edits in this controlled setup <a href="#ref-2" class="cite-link">[2]</a>.</p>
+<p>Source framing: the authors argue this benchmark is a <strong>diagnostic tool</strong>, not a measure of overall capability or user outcomes <a href="#ref-2" class="cite-link">[2]</a>. They also explicitly note that production systems can mitigate these effects with <strong>verification loops, orchestration, and domain-specific tooling</strong> <a href="#ref-2" class="cite-link">[2]</a>.</p>
+<p>Limitations: this is a constrained benchmark, and the authors themselves say it should not be treated as a blanket argument against AI in professional workflows <a href="#ref-2" class="cite-link">[2]</a>. My take: that caveat is correct. Still, the failure mode is real and under-measured. Long edit chains are where “mostly right” systems silently become dangerous.</p>
+<p><em>Buzz: 38/100 — moderate traction (30); found in Microsoft Research Blog only. Would need pickup from additional platforms (Reddit, HF, blogs) to score higher.</em></p>
+<p><strong>DystopiaBench community test of 42 LLMs</strong> <code>🔥 39/100</code></p>
+<p>The core claim of the post is that many models’ apparent safety is overstated, and that willingness to assist harmful “dystopian” scenarios varies in ways that simple refusal-rate narratives miss <a href="#ref-12" class="cite-link">[12]</a>.</p>
+<p>Method: the author says <strong>DystopiaBench</strong> runs <strong>36 escalating scenarios across 6 dystopia types</strong>, including autonomous weapons/nuclear override, mass surveillance/truth manipulation, behavioral conditioning, coercive therapeutic control, regulatory capture, and civic manipulation <a href="#ref-12" class="cite-link">[12]</a>. This is a user-built red-teaming setup rather than a peer-reviewed benchmark, but the structure is more systematic than a handful of jailbreak screenshots.</p>
+<p>Concrete result: the most concrete number in the summary is the scope itself: <strong>42 LLMs</strong> tested on <strong>36 scenarios across 6 categories</strong> <a href="#ref-12" class="cite-link">[12]</a>.</p>
+<p>Source framing: the poster argues that supposedly “safest” closed models are “lying to you,” meaning public safety branding does not necessarily map to robust refusal under broad adversarial framing <a href="#ref-12" class="cite-link">[12]</a>.</p>
+<p>Limitations: this is a Reddit post, and the title is more polemical than the evidence shown in the summary <a href="#ref-12" class="cite-link">[12]</a>. My take: useful as exploratory red-teaming, not as definitive safety ranking. Benchmark design choices here will dominate conclusions: scenario wording, scoring, and whether models are tested with default system prompts all matter a lot.</p>
+<p><em>Buzz: 39/100 — 100 Reddit upvotes, 50 comments; found in r/LocalLLaMA only. Would need pickup from additional platforms (Reddit, HF, blogs) to score higher.</em></p>
+<p><strong>Anthropomorphism and “understanding” discourse</strong> <code>🔥 40/100</code></p>
+<p>The core claim of this discussion thread is that the field keeps using words like “understands,” “reasons,” and “knows” without shared definitions, which makes claims about LLM cognition slippery <a href="#ref-8" class="cite-link">[8]</a>.</p>
+<p>Method: this is not an experiment but a conceptual critique. The author points to recurring ambiguity in how people interpret model behavior, invoking arguments like the Chinese Room to question whether observed competence should be read as understanding <a href="#ref-8" class="cite-link">[8]</a>. For your interests, the value is less philosophy-for-its-own-sake and more the warning that eval language can smuggle in conclusions.</p>
+<p>Concrete result: the thread drew <strong>100 Reddit upvotes and 337 comments</strong> <a href="#ref-8" class="cite-link">[8]</a>.</p>
+<p>Source framing: the poster is pushing back on casual anthropomorphic framing in papers and social media <a href="#ref-8" class="cite-link">[8]</a>.</p>
+<p>Limitations: no new empirical evidence is offered in the summary <a href="#ref-8" class="cite-link">[8]</a>. My take: the terminology debate matters when it obscures failure analysis. If “understanding” just means “gets benchmark answers right,” you miss the distinction between robust latent world models and brittle shortcut behavior. That distinction is exactly what shows up in delegation and agent failures.</p>
+<p><em>Buzz: 40/100 — 100 Reddit upvotes, 337 comments; found in r/artificial only. Would need pickup from additional platforms (Reddit, HF, blogs) to score higher.</em></p>
+<h2>🔬 Notable Research</h2>
+<p><strong>Hölder Policy Optimisation</strong> <code>🔥 43/100</code></p>
+<p>The core claim is that <strong>GRPO</strong> is limited by using a fixed rule to aggregate token-level probabilities into sequence-level policy updates, and that replacing this with a more flexible Hölder-style aggregation improves reinforcement learning for LLMs <a href="#ref-6" class="cite-link">[6]</a>.</p>
+<p>Method: the paper starts from <strong>Group Relative Policy Optimisation (GRPO)</strong>, which estimates advantages across a group of sampled trajectories <a href="#ref-6" class="cite-link">[6]</a>. The bottleneck is how sequence probabilities are aggregated from token probabilities when mapping trajectory-level advantages back to token-level updates <a href="#ref-6" class="cite-link">[6]</a>. The authors propose <strong>Hölder Policy Optimisation</strong>, which, from the summary, introduces a generalized aggregation mechanism based on Hölder-style means rather than a fixed one <a href="#ref-6" class="cite-link">[6]</a>. The point is adaptability: different tasks may benefit from different sensitivity to low-probability tokens within a sequence.</p>
+<p>Concrete result: the summary says “Empirically, we ob…” but the result is truncated in your source dump, so I can’t quote the benchmark number safely <a href="#ref-6" class="cite-link">[6]</a>.</p>
+<p>Source framing: the authors argue the fixed aggregation mechanism in GRPO “fundamentally limits the algorithm’s adaptability” <a href="#ref-6" class="cite-link">[6]</a>.</p>
+<p>Limitations: without the full abstract or tables, the exact objective and gains are missing here <a href="#ref-6" class="cite-link">[6]</a>. My take: this is technically plausible and relevant to RL-for-reasoning because sequence-level credit assignment is still crude in most post-training recipes. The question is whether the gain survives beyond narrow math/code settings.</p>
+<p><em>Buzz: 43/100 — 16 HuggingFace upvotes; found in HuggingFace Papers only. Would need pickup from additional platforms (Reddit, HF, blogs) to score higher.</em></p>
+<p><strong>MMSkills: Towards Multimodal Skills for General Visual Agents</strong> <code>🔥 41/100</code></p>
+<p>The core claim is that reusable skills for visual agents should themselves be <strong>multimodal</strong>, because visual procedures depend on recognizing state, interpreting visual evidence, and selecting actions, not just following text instructions <a href="#ref-7" class="cite-link">[7]</a>.</p>
+<p>Method: the paper argues against text-only skill packaging and proposes a skill substrate tailored to visual agents <a href="#ref-7" class="cite-link">[7]</a>. From the summary, the main idea is that reusable behavior in visual settings requires both procedural instructions and visual grounding components — effectively skill representations that encode what to do and how to recognize when to do it <a href="#ref-7" class="cite-link">[7]</a>. That makes this relevant to GUI agents and embodied systems where textual prompting alone is often insufficient.</p>
+<p>Concrete result: the item has <strong>99 HuggingFace upvotes</strong> in the provided metadata <a href="#ref-7" class="cite-link">[7]</a>.</p>
+<p>Source framing: the authors frame multimodal skills as a missing substrate for improving general visual agents <a href="#ref-7" class="cite-link">[7]</a>. They are extending the “skills” idea from language-agent prompting into perception-action loops.</p>
+<p>Limitations: the summary is abstract-level only and does not provide architecture details or benchmark gains <a href="#ref-7" class="cite-link">[7]</a>. My take: this is the right abstraction if you believe GUI and robotic agents need reusable perceptual routines. The hard part will be portability across environments; visual skills often overfit to specific layouts and rendering styles.</p>
+<p><em>Buzz: 41/100 — 99 HuggingFace upvotes; found in HuggingFace Papers only. Would need pickup from additional platforms (Reddit, HF, blogs) to score higher.</em></p>
+<p><strong>Strategy-guided exploration for RLVR</strong> <code>🔥 39/100</code></p>
+<p>The core claim is that <strong>RL with verifiable rewards (RLVR)</strong> is bottlenecked by poor exploration, and that strategy-guided exploration can improve reasoning training more efficiently than brute-force scaling of rollouts <a href="#ref-15" class="cite-link">[15]</a>.</p>
+<p>Method: the paper targets the standard RLVR setup where the policy improves only on trajectories it samples <a href="#ref-15" class="cite-link">[15]</a>. The proposed fix, from the summary, is to “nudge” exploration beyond the policy’s comfort zone using strategy guidance rather than simply increasing rollout count <a href="#ref-15" class="cite-link">[15]</a>. The exact mechanism is not fully visible in the snippet, but the conceptual contribution is clear: improve coverage of useful solution trajectories under verifiable rewards.</p>
+<p>Concrete result: the summary does not expose a benchmark number <a href="#ref-15" class="cite-link">[15]</a>.</p>
+<p>Source framing: the authors argue that brute-force rollout scaling is computationally expensive and that better exploration is the more efficient path for reasoning gains <a href="#ref-15" class="cite-link">[15]</a>.</p>
+<p>Limitations: missing exact algorithmic details and results from the provided text <a href="#ref-15" class="cite-link">[15]</a>. My take: this is one of the central open problems in reasoning RL. Most current pipelines are still weak at generating genuinely novel successful trajectories; they mostly amplify what the base model already does.</p>
+<p><em>Buzz: 39/100 — 25 HuggingFace upvotes; found in HuggingFace Papers only. Would need pickup from additional platforms (Reddit, HF, blogs) to score higher.</em></p>
+<h2>🛠️ Tools &amp; Repos Worth Cloning</h2>
+<p><strong>SmallCode: coding agent for 4B models</strong> <code>🔥 46/100</code></p>
+<p>The core claim from this Reddit post is that existing coding agents are overfit to frontier APIs, and that a purpose-built agent stack can get strong benchmark performance from a <strong>4B</strong> local model <a href="#ref-4" class="cite-link">[4]</a>. The headline claim is <strong>87% on benchmarks</strong> with a small model <a href="#ref-4" class="cite-link">[4]</a>.</p>
+<p>Method: the author’s stated motivation is that mainstream coding agents break with local models because tool calls fail, context overflows, and multi-step tasks collapse <a href="#ref-4" class="cite-link">[4]</a>. The implied method is an agent design optimized for small-model constraints rather than simply swapping the backend under Cursor/Claude Code-style assumptions <a href="#ref-4" class="cite-link">[4]</a>. The summary does not include the exact architecture, but the likely ingredients are tighter context management, simpler tool protocols, and stronger workflow constraints.</p>
+<p>Concrete result: the claimed result is <strong>87% on benchmarks with a 4B parameter model</strong> <a href="#ref-4" class="cite-link">[4]</a>.</p>
+<p>Source framing: the author frames this as proof that local coding agents do not need frontier-scale models if the harness is built correctly <a href="#ref-4" class="cite-link">[4]</a>.</p>
+<p>Limitations: this is a Reddit post and the benchmark is unspecified in the summary, which is a major caveat <a href="#ref-4" class="cite-link">[4]</a>. My take: promising, but I would not trust the 87% number until I know the suite, pass criteria, and whether the benchmark reflects realistic repo-scale coding rather than toy tasks.</p>
+<p><em>Buzz: 46/100 — 449 Reddit upvotes, 230 comments; found in r/LocalLLaMA only. Would need pickup from additional platforms (Reddit, HF, blogs) to score higher.</em></p>
+<p><strong>React Doctor</strong> <code>🔥 39/100</code></p>
+<p>The core claim is simple: coding agents write bad React, and this tool catches it automatically with a health score and actionable diagnostics <a href="#ref-10" class="cite-link">[10]</a>. This is directly useful as a post-generation verifier in agentic coding loops <a href="#ref-10" class="cite-link">[10]</a>.</p>
+<p>Method: <code>react-doctor</code> scans a codebase and outputs a <strong>0–100 health score</strong> with diagnostics across <strong>state &amp; effects, performance, architecture, security, and accessibility</strong> <a href="#ref-10" class="cite-link">[10]</a>. It adapts rules based on framework and React version, supports Next.js, Vite, and React Native, and ships an install mode that injects best-practice guidance into coding agents like Claude Code, Cursor, Codex, and OpenCode <a href="#ref-10" class="cite-link">[10]</a>. It also includes a GitHub Action for CI <a href="#ref-10" class="cite-link">[10]</a>.</p>
+<p>Concrete result: the score bands are explicit: <strong>75+ Great, 50–74 Needs work, under 50 Critical</strong> <a href="#ref-10" class="cite-link">[10]</a>.</p>
+<p>Source framing: the maintainers frame it both as a scanner and as a way to “teach your coding agent React best practices so it stops writing the bad code in the first place” <a href="#ref-10" class="cite-link">[10]</a>.</p>
+<p>Limitations: this is heuristic static analysis, not semantic correctness checking <a href="#ref-10" class="cite-link">[10]</a>. My take: useful as a cheap verifier layer. The risk is optimizing agents toward style-compliance while missing deeper architectural or product-level errors.</p>
+<p><em>Buzz: 39/100 — 2,430 GitHub stars gained this week; found in GitHub Trending only. Would need pickup from additional platforms (Reddit, HF, blogs) to score higher.</em></p>
+<p><strong>OpenAI’s Windows sandbox for Codex</strong> <code>🔥 33/100</code></p>
+<p>The core claim is that OpenAI built a Windows sandbox that lets Codex operate with lower friction than manual approvals while enforcing bounded file and network access <a href="#ref-20" class="cite-link">[20]</a>. This is agent infrastructure, but specifically around safety and containment <a href="#ref-20" class="cite-link">[20]</a>.</p>
+<p>Method: Codex commands run in a <strong>constrained execution environment</strong> where the OS launches commands with reduced permissions and those constraints propagate through the process tree <a href="#ref-20" class="cite-link">[20]</a>. In default mode, Codex can read files broadly, write within the workspace, and has <strong>no internet access unless specified</strong> <a href="#ref-20" class="cite-link">[20]</a>. The sandbox is there to enforce these constraints rather than relying on policy alone <a href="#ref-20" class="cite-link">[20]</a>.</p>
+<p>Concrete result: the before/after product claim is qualitative but concrete: without the sandbox, Windows users had to either approve nearly every command or use unrestricted <strong>Full Access mode</strong> <a href="#ref-20" class="cite-link">[20]</a>.</p>
+<p>Source framing: OpenAI frames the sandbox as the mechanism that preserves Codex’s usefulness while avoiding unrestricted local execution <a href="#ref-20" class="cite-link">[20]</a>.</p>
+<p>Limitations: this is an engineering blog, not an external audit, so the security guarantees are described by the builder <a href="#ref-20" class="cite-link">[20]</a>. My take: this is the right direction. Agent deployment quality now depends as much on OS-level containment and permission design as on model quality.</p>
+<p><em>Buzz: 33/100 — moderate traction (30); found in OpenAI Blog only. Would need pickup from additional platforms (Reddit, HF, blogs) to score higher.</em></p>
+<h2>📊 Benchmarks &amp; Evals</h2>
+<p><strong>SocialReasoning-Bench</strong> <code>🔥 38/100</code></p>
+<p>The benchmark’s core claim is that agent evals need to measure whether the model improves the user’s position, not just whether it completes the workflow <a href="#ref-3" class="cite-link">[3]</a>. It targets delegated social tasks where utility is shaped by interaction, negotiation, and selective information sharing <a href="#ref-3" class="cite-link">[3]</a>.</p>
+<p>Method: two environments — <strong>Calendar Coordination</strong> and <strong>Marketplace Negotiation</strong> — with scoring on both <strong>outcome optimality</strong> and <strong>due diligence</strong> <a href="#ref-3" class="cite-link">[3]</a>. This dual metric is the important design choice: it separates “got to some answer” from “searched and advocated competently” <a href="#ref-3" class="cite-link">[3]</a>.</p>
+<p>Concrete result: Microsoft reports a prior pattern where agents accepted the first proposal <strong>up to 93% of the time</strong>, motivating this benchmark family <a href="#ref-3" class="cite-link">[3]</a>.</p>
+<p>Source framing: the authors argue that trustworthy delegation requires social reasoning, not just execution competence <a href="#ref-3" class="cite-link">[3]</a>.</p>
+<p>Limitations: the blog post excerpt lacks full tables and scoring details <a href="#ref-3" class="cite-link">[3]</a>. My take: strong eval direction, and one that product teams should probably start using before deploying autonomous schedulers or buyers.</p>
+<p><em>Buzz: 38/100 — moderate traction (30); found in Microsoft Research Blog only. Would need pickup from additional platforms (Reddit, HF, blogs) to score higher.</em></p>
+<p><strong>Delegated-work fidelity benchmark</strong> <code>🔥 38/100</code></p>
+<p>The core claim is that long-horizon delegated editing needs semantic-preservation evals, because repeated AI modifications can silently corrupt content while preserving surface plausibility <a href="#ref-2" class="cite-link">[2]</a>.</p>
+<p>Method: <strong>chained transformation-and-inversion tasks</strong> plus <strong>domain-specific semantic parsing</strong> to score preservation of underlying meaning across documents, spreadsheets, code, and structured files <a href="#ref-2" class="cite-link">[2]</a>.</p>
+<p>Concrete result: the benchmark reports observed <strong>fidelity degradation over repeated edits</strong> in the controlled setting <a href="#ref-2" class="cite-link">[2]</a>.</p>
+<p>Source framing: Microsoft explicitly says this is a <strong>diagnostic benchmark</strong>, not a general capability scorecard <a href="#ref-2" class="cite-link">[2]</a>.</p>
+<p>Limitations: no summary-level numeric leaderboard is visible in the excerpt <a href="#ref-2" class="cite-link">[2]</a>. My take: this is exactly the kind of eval that exposes why “agent completed 9/10 tasks” can still be operationally unsafe.</p>
+<p><em>Buzz: 38/100 — moderate traction (30); found in Microsoft Research Blog only. Would need pickup from additional platforms (Reddit, HF, blogs) to score higher.</em></p>
+<h2>Bottom line</h2>
+<p>This week’s signal is less about bigger models and more about <strong>agent reliability under delegation</strong>. The two Microsoft pieces are the most important because they target the gap between benchmark competence and trustworthy agency: agents complete tasks, but often fail to preserve fidelity over long horizons or advocate for the user in social settings <a href="#ref-2" class="cite-link">[2]</a><a href="#ref-3" class="cite-link">[3]</a>. On the practical side, Anthropic’s skills repo and the growing skills/memory/tooling ecosystem point to the current engineering answer: modularize behavior, externalize state, and add verification layers rather than expecting raw model intelligence to solve everything <a href="#ref-9" class="cite-link">[9]</a><a href="#ref-17" class="cite-link">[17]</a>. If you only spend time on three things, I’d read SocialReasoning-Bench closely, inspect the delegated-work fidelity methodology, and skim the skills/memory repos with an eye toward how they encode reusable behavior and state.</p>
+<h2>🔬 Technical Deep Dives</h2>
+<p><em>Click to expand — detailed breakdowns for items with available source content.</em></p>
+<details>
+<summary><strong>📄 Further Notes on Our Recent Research on AI Delegation and Long-Horizon Reliability <a href="#ref-2" class="cite-link">[2]</a></strong></summary>
+
+This is not a model-release paper; it’s an evaluation-methodology story. The core object is a benchmark for **delegated work**: repeated AI-mediated edits to artifacts like documents, spreadsheets, code, or structured files, with only sparse human checking. The method they describe is a **chained transformation-and-inversion protocol**. Concretely, an artifact is transformed repeatedly across many steps, then semantically “inverted” or checked to see whether the original meaning survives. The important technical choice is the metric: they use **domain-specific semantic parsing**, not string overlap, so they’re explicitly measuring preservation of underlying content rather than formatting, paraphrase, or style. That’s the right move if you care about silent corruption.
+
+What’s missing from the blog is exactly what a reproducer would need: the artifact domains, parser implementations, prompt templates, number of models tested, whether the chain is deterministic, and how “fidelity” is aggregated over steps. I’d also want to know whether the inversion is model-based or rule-based, because evaluator leakage matters a lot here. If the parser is imperfect, some reported corruption may be metric error.
+
+The headline result is substantial: **frontier models lose roughly 19–34% artifact fidelity over 20 delegated iterations**. That implies a compounding-error regime rather than one-off failure. They also note that **Python workflows were more robust** than some other domains, which is plausible because code has tighter syntax/semantics and better opportunities for exact checking. The blog is careful to say this is **not** a measure of overall capability, task completion, or user satisfaction. Good—because a workflow can still succeed despite semantic drift if orchestration adds verification loops.
+
+Practically, the takeaway is engineering, not panic. If you deploy agents in long-horizon editing loops, add **state verification, diff-based checks, intermediate invariants, typed schemas, and domain-specific validators**. The biggest limitation—acknowledged and unacknowledged—is ecological validity: constrained chained edits are diagnostic, but real systems often include retrieval, tool use, rollback, and human review. So this benchmark is best seen as a **stress test for semantic preservation**, not a full proxy for production trustworthiness.
+
+</details>
+
+<details>
+<summary><strong>📄 SocialReasoning-Bench: Measuring whether AI agents act in users’ best interests <a href="#ref-3" class="cite-link">[3]</a></strong></summary>
+
+This benchmark is attacking a genuinely under-measured capability: **principal-agent social reasoning**. The setup is not “can the model finish the task?” but “does it advocate competently for the user under conflicting interests?” The benchmark has two task families: **Calendar Coordination** and **Marketplace Negotiation**. That means the agent must infer user preferences, reason about counterparties, decide what information to reveal, and negotiate rather than merely comply. Methodologically, that’s a big step beyond standard single-turn instruction following.
+
+The evaluation has two axes. First is **outcome optimality**: how much utility/value the agent secures for the user—e.g., better meeting slots or better prices. Second is **due diligence**: whether the agent follows a competent process, such as exploring alternatives, asking clarifying questions, or resisting the first acceptable-but-suboptimal offer. That second metric is crucial because a model can luck into a good outcome while still being an unreliable delegate. The blog cites a striking prior result: in a simulated marketplace, agents **accepted the first proposal up to 93% of the time** without exploring alternatives. That’s classic myopic satisficing.
+
+Now, the frustrating part: the blog does not specify the exact simulator architecture, user utility functions, negotiation protocol, model roster, prompting format, or scoring rubric. For reproduction, I’d need the environment definitions, whether counterparties are scripted or model-based, how private preferences are encoded, and whether the benchmark uses hidden information or stochastic rollouts. If due diligence is judged by heuristics or another LLM, evaluator reliability becomes a major issue.
+
+For practitioners, this benchmark suggests you should not trust a raw frontier model as a user advocate in socially strategic settings. Prompting helps, but the blog says it remains **well below trustworthy delegation standards**. So in deployment, you want explicit utility models, negotiation policies, escalation thresholds, privacy constraints, and maybe search/planning over offers. A likely limitation is simulator realism: calendar and marketplace tasks are useful abstractions, but real social delegation includes reputation, repeated interactions, norms, and legal constraints. Still, as a diagnostic benchmark, this is exactly the kind of pressure test agent builders need.
+
+</details>
+
+<details>
+<summary><strong>📄 bytedance/UI-TARS-desktop <a href="#ref-5" class="cite-link">[5]</a></strong></summary>
+
+UI-TARS-desktop is best understood as a **productized runtime** for a multimodal GUI agent rather than a novel model paper. The desktop app wraps the underlying **UI-TARS** model family and exposes it as a native operator for **local or remote desktop** control, plus browser automation. Architecturally, the likely stack is the now-standard GUI-agent loop: screenshot capture → multimodal LLM inference over pixels plus task instruction → action grounding into mouse/keyboard events → environment update → repeat. The README hints at support for both local and remote operators, which implies an abstraction layer over OS input APIs and possibly browser control backends.
+
+What’s technically useful here is the systems packaging. A practitioner doesn’t just need a vision-language model; they need **screen capture, coordinate normalization, action execution, permissions, latency handling, and failure recovery**. UI-TARS-desktop appears to provide that glue. Since it is based on the open UI-TARS model, you should expect image encoder + LLM-style decoder behavior, with outputs representing grounded UI actions such as click, type, scroll, and maybe element selection. But the repository excerpt gives **no hard details** on model architecture, context window, action schema, or safety guardrails. That’s the missing core if you want to evaluate or extend it scientifically.
+
+For reproduction/use, the important questions are operational: what OSes are supported, how screenshots are sampled, whether inference runs fully local or via remote APIs, GPU requirements, how coordinates are mapped under scaling/HiDPI, and whether the agent uses OCR/accessibility trees in addition to raw pixels. Those details dominate reliability in GUI automation.
+
+Limitations are exactly what GUI-agent practitioners already know: brittleness to UI changes, pop-ups, latency, hidden state, and unsafe actions. A desktop agent can also leak secrets if it sees notifications, password managers, or sensitive windows. The README markets “human-like task completion,” but without benchmark numbers, we can’t assess robustness. So treat this as a promising **agent runtime and UX layer**, not evidence of solved desktop autonomy.
+
+</details>
+
+<details>
+<summary><strong>📄 anthropics/skills <a href="#ref-9" class="cite-link">[9]</a></strong></summary>
+
+Anthropic’s `skills` repository is not a model contribution; it’s a **capability packaging standard** for Claude. A skill is a folder containing a `SKILL.md` plus scripts/resources that Claude can load dynamically for specialized tasks. Think of this as retrieval-augmented prompting with executable affordances and structured task-specific instructions. The key systems idea is **modular specialization without fine-tuning**: instead of retraining the base model, you bind it to domain procedures, templates, and helper code at runtime.
+
+Architecturally, the interesting unit is the skill bundle. It can include instruction hierarchies, metadata, scripts, and supporting assets. That means a deployed Claude session can condition on a compact, reusable operational policy for tasks like document generation, data analysis, branding compliance, or web testing. The repository explicitly includes the document skills behind Claude’s file-generation features—`docx`, `pdf`, `pptx`, `xlsx`—which suggests these are fairly sophisticated pipelines, likely involving templating, structured intermediate representations, and tool calls rather than plain text generation. But here’s the scientific catch: there are **no model architecture details, no losses, no training datasets, and no benchmark numbers** in the repo excerpt, because this is a product integration layer, not a training paper.
+
+For practitioners, the value is reproducibility of workflow behavior. If you want Claude to perform a task consistently, encode the procedure into a skill: define scope, constraints, file formats, tool usage, and examples. This is especially useful for enterprise settings where “how” matters as much as “what.” You’d want versioning, tests, and guardrails around every skill, because these bundles are effectively executable policy.
+
+The limitations are substantial. Skills can improve consistency, but they do not guarantee correctness; they are still downstream of model reasoning quality. They can also become stale, overfit to narrow workflows, or introduce security risk if scripts/resources are not sandboxed. Anthropic’s own disclaimer matters: the open repository demonstrates patterns, but production Claude behavior may differ. So treat skills as **prompt-and-tool engineering artifacts**, not as formal guarantees of competence.
+
+</details>
+
+<details>
+<summary><strong>📄 millionco/react-doctor <a href="#ref-10" class="cite-link">[10]</a></strong></summary>
+
+React Doctor is a static-analysis and workflow-enforcement tool aimed squarely at the “LLM wrote plausible but bad React” problem. Under the hood, this is almost certainly a **rule-based analyzer over the project AST and dependency graph**, not an ML model. The README says it scans a codebase and outputs a **0–100 health score** plus diagnostics across **state/effects, performance, architecture, security, and accessibility**, with rules toggled automatically by framework and React version. That implies environment detection (e.g., Next.js vs Vite vs React Native), parser support for TS/JSX, and a weighted scoring function over lint-like findings.
+
+There’s no paper-style architecture here—no layers, no loss, no training dataset—so the right technical framing is program analysis. A plausible implementation stack would use Babel/TypeScript ASTs, framework heuristics from `package.json` and config files, and rule modules that identify anti-patterns like unstable effect dependencies, unnecessary re-renders, client/server boundary misuse, insecure DOM injection, or a11y violations. The removed `knip` integration tells you they’re narrowing scope away from dead-code analysis and toward React-specific quality signals.
+
+For practitioners, the killer feature is operationalization. You can run it via `npx react-doctor@latest`, install guidance for coding agents via `install`, and enforce it in CI through a GitHub Action. The `score` output makes it easy to gate PRs or trend quality over time. If you’re using AI coding agents, this is exactly the kind of **post-generation verifier** you want in the loop.
+
+But there are limitations. A single scalar health score can hide tradeoffs and may create false precision. Static analysis also struggles with dynamic patterns, custom abstractions, and framework edge cases. Without a published rule taxonomy, severity calibration, or validation dataset, we don’t know the false-positive/false-negative profile. So use it as an automated reviewer, not an oracle. The strongest deployment pattern is: agent writes code → React Doctor flags issues → human or agent revises → CI enforces thresholds.
+
+</details>
+
+<details>
+<summary><strong>📄 danielmiessler/Personal_AI_Infrastructure <a href="#ref-11" class="cite-link">[11]</a></strong></summary>
+
+Personal AI Infrastructure (PAI) looks like a **systems blueprint/repository for running a personal AI stack**, not a single algorithmic contribution. From the excerpt, it appears to package configuration, workflows, release artifacts, and Claude-oriented assets (`.claude/PAI/...`) into a cohesive environment for personal knowledge, automation, and agentic workflows. The interesting technical idea is architectural: instead of treating AI as a chat endpoint, PAI treats it as an **integrated local infrastructure layer** with memory, workflows, and versioned operational logic.
+
+Because the provided content is sparse, we cannot responsibly infer exact model architecture, training strategy, or datasets. There is no evidence here of a novel neural network, loss function, or benchmark. What I’d want to know is the actual stack: which LLM providers are supported, whether embeddings/vector stores are included, how documents are ingested, what orchestration framework is used, how secrets are managed, and whether there’s local inference support via Ollama/vLLM/llama.cpp. The release references suggest a fairly opinionated internal structure—possibly algorithms, pulse/monitoring, and Claude-specific prompts—but the excerpt doesn’t expose enough.
+
+For practitioners, the likely value is reproducible scaffolding: a prebuilt way to assemble personal retrieval, automation, and agent workflows. Reproducibility here means environment setup, config management, and workflow definitions more than model training. If you adopt it, inspect how it handles **data locality, credential storage, observability, and upgrade paths**. Those are the real failure points in personal AI systems.
+
+The limitations are exactly those of many “AI infrastructure” repos: broad ambition, unclear boundaries, and potential coupling to specific vendors or prompt conventions. Without explicit evaluation, it’s hard to know whether it improves latency, quality, privacy, or maintainability relative to a hand-rolled stack. So I’d classify PAI as a **reference architecture / operational framework**. Useful, potentially powerful—but not something you can evaluate like a research model without much more documentation.
+
+</details>
+
+<details>
+<summary><strong>📄 tech-leads-club/agent-skills <a href="#ref-14" class="cite-link">[14]</a></strong></summary>
+
+This repository is positioning itself as a **secure, validated skill registry** for coding agents. That framing is important: the innovation is not a new model, but a governance and packaging layer for agent capabilities. In a world where agent “skills” are effectively executable extensions—prompts, scripts, tool manifests, templates—the attack surface is real. The README cites a striking ecosystem claim: **over 13% of marketplace skills contain critical vulnerabilities**. So this project’s technical contribution is likely around **verification, testing, and safe distribution** of reusable agent capabilities.
+
+Architecturally, I’d expect a monorepo of TypeScript-based skill packages, probably with manifests, validation schemas, sandbox assumptions, CI tests, and release automation. The badges mention **Node >=22**, **TypeScript**, **Nx Cloud**, and **semantic-release**, which strongly suggests a structured package graph with automated build/test/publish. That’s exactly what you want if skills are to be composable and auditable. But the excerpt does not reveal the internal skill schema, validation mechanism, or threat model. Are skills statically analyzed? Are dependencies pinned? Is there permission scoping? Are prompts linted for prompt injection risks? Those are the crucial missing details.
+
+For practitioners, the appeal is obvious: instead of copy-pasting random agent extensions from the internet, you install vetted skills for Claude Code, Cursor, Antigravity, etc. To reproduce or trust the system, I’d want signed releases, SBOMs, provenance attestations, sandbox boundaries, and a transparent review checklist. “Verified” needs a concrete definition.
+
+The main limitation is that security claims are only as strong as the validation process. A tested skill can still be dangerous if its runtime environment is overprivileged or if the model can be socially engineered into misuse. Also, skill safety is not static—dependencies drift, APIs change, and prompt surfaces evolve. So this is a very promising direction, but its real value depends on whether the registry enforces **supply-chain discipline and least privilege**, not just style consistency.
+
+</details>
+
+<details>
+<summary><strong>📄 MervinPraison/PraisonAI <a href="#ref-16" class="cite-link">[16]</a></strong></summary>
+
+PraisonAI is pitching an **agent orchestration framework** for building “AI workforces” rather than a single model. The README language—research, plan, execute across apps; one agent to an organization; deployed in five lines of code—suggests a multi-agent runtime with workflow graphs, tool integrations, and possibly self-improvement loops. The MCP registry badge is a clue: this system likely leans on **Model Context Protocol** integrations to connect agents to external tools and services. So the architecture is probably: planner/controller agent + specialist worker agents + tool adapters + memory/state + dashboard/observability.
+
+What’s absent is the technical substance needed for a research-grade deep dive. There are no model architectures, no training losses, no datasets, and no benchmark numbers in the excerpt. That likely means PraisonAI is model-agnostic and delegates cognition to external LLM APIs. If so, the relevant engineering questions are: how are agents defined, how is task decomposition represented, how are tool permissions scoped, what memory substrate is used, how are retries and failures handled, and how is “self-improving” implemented without unsafe feedback loops? The dashboard and “AgentFlow” visuals imply a graph-based orchestration UI, but we’d need docs or code to confirm.
+
+For practitioners, the main reproducibility concern is operational complexity. Multi-agent systems often look magical in demos and become messy in production because of latency, cost, non-determinism, and cascading failure. If you use PraisonAI, inspect the execution semantics: synchronous vs asynchronous tasks, checkpointing, human-in-the-loop hooks, observability, and secret management. Also verify whether it supports local models or only hosted APIs.
+
+The biggest limitation—common to this whole category—is evaluation. “24/7 AI workforce” is marketing unless backed by task success rates, cost curves, and failure analyses. Without benchmarks, you should treat PraisonAI as an orchestration framework that may accelerate prototyping, not as evidence that autonomous organizations are solved.
+
+</details>
+
+<details>
+<summary><strong>📄 MemoriLabs/Memori <a href="#ref-17" class="cite-link">[17]</a></strong></summary>
+
+Memori is a memory layer for agents with a strong design claim: **store memory from what agents do, not just what they say**. That’s a subtle but important shift. Most memory systems are chat-centric—summaries, embeddings of dialogue, retrieval over text. Memori is positioning itself as **behavioral/operational memory**, likely capturing tool calls, state transitions, outcomes, and execution traces. Architecturally, that suggests an event-based memory substrate sitting alongside the LLM and application stack, with adapters for different frameworks and datastores.
+
+The repo says it is **LLM-, datastore-, and framework-agnostic**, and offers both cloud and SDKs for TypeScript/Python. So the likely architecture is an API service that ingests memory events, indexes them, and exposes retrieval/query interfaces back to the agent runtime. The benchmark page teaser (“Choose memory that performs”) implies they have internal evaluations, but the excerpt gives **no numbers**, no retrieval metrics, and no task benchmarks. We also don’t know the memory representation: embeddings only, symbolic event schema, hybrid retrieval, temporal indexing, graph structure, or learned salience scoring. Those details matter enormously.
+
+For practitioners, the key implementation question is what exactly you log. If Memori is strongest on actions, then you want to instrument tool invocations, browser events, API results, user corrections, and task outcomes—not just messages. Reproduction would require understanding retention policies, privacy controls, deduplication, retrieval latency, and how memory is ranked at inference time. Memory systems fail when they over-retrieve irrelevant history or under-retrieve critical context.
+
+Limitations are both technical and product-level. Action-derived memory can be richer than text, but it is also noisier and more privacy-sensitive. It may encode accidental behavior, transient failures, or sensitive operational traces. And unless the retrieval policy is excellent, more memory can actually degrade agent performance. So Memori’s promise is compelling, but I’d want to see **ablation studies on action vs text memory, long-horizon task success, latency/cost tradeoffs, and privacy guarantees** before treating it as a mature memory substrate.
+
+</details>
+
+<details>
+<summary><strong>📄 bytedance/UI-TARS <a href="#ref-18" class="cite-link">[18]</a></strong></summary>
+
+UI-TARS is the actual model-side story behind the desktop runtime. The repo describes **UI-TARS-1.5**, an open-source multimodal agent for GUI interaction, with a **7B** checkpoint on Hugging Face and a paper/technical report. The task is classic but nasty: perceive a live UI from pixels, understand the user’s goal, ground targets spatially, and emit executable actions. This is effectively a **vision-language-action model**. The note about **Qwen 2.5-VL-based models using absolute coordinates** is a very concrete architectural clue: the model likely inherits a VLM backbone and predicts grounded actions in screen-coordinate space, which then get translated into clicks, drags, typing, etc.
+
+The repo excerpt doesn’t spell out the full architecture, but a reasonable reading is: image encoder + language backbone + action-token head, trained or instruction-tuned on GUI trajectories. The mention of OSWorld reproduction scripts is important because **OSWorld** is a standard benchmark for computer-use agents. That gives practitioners a path to compare against published results. However, the excerpt omits the exact training dataset composition, loss formulation, action vocabulary, and benchmark numbers, so we can’t quote performance responsibly from this snippet alone.
+
+What a practitioner needs to know is mostly about deployment and grounding. Coordinate systems are a huge source of bugs: screen scaling, window offsets, browser zoom, and multi-monitor setups can all break absolute-coordinate policies. If the model was trained with absolute grounding, your inference pipeline must match the expected preprocessing exactly. Also decide whether you’ll augment with OCR or accessibility trees; pure pixel agents are flexible but brittle.
+
+Limitations are the usual GUI-agent pain points: distribution shift across apps/themes, hidden state, modal dialogs, latency, and unsafe actions. The repo’s later mention of UI-TARS-2 as “all in one” also suggests 1.5 may have narrower capability boundaries. Still, UI-TARS is one of the more serious open efforts in **native computer-use agents**, and the OSWorld reproducibility hook makes it especially relevant for researchers.
+
+</details>
+
+<h2>📚 References</h2>
+<p><span id="ref-1"></span><strong><a href="#ref-1" class="cite-link">[1]</a></strong> <a href="https://huggingface.co/papers/2605.15301">Solvita: Enhancing Large Language Models for Competitive Programming via Agentic Evolution</a> — Han Li, Jinyu Tian <em>(HuggingFace Papers)</em> <code>🔥 43/100</code></p>
+<p><span id="ref-2"></span><strong><a href="#ref-2" class="cite-link">[2]</a></strong> <a href="https://www.microsoft.com/en-us/research/blog/further-notes-on-our-recent-research-on-ai-delegation-and-long-horizon-reliability/">Further Notes on Our Recent Research on AI Delegation and Long-Horizon Reliability</a> — Philippe Laban, Tobias Schnabel, Jennifer Neville <em>(Microsoft Research Blog)</em> <code>🔥 38/100</code></p>
+<p><span id="ref-3"></span><strong><a href="#ref-3" class="cite-link">[3]</a></strong> <a href="https://www.microsoft.com/en-us/research/blog/socialreasoning-bench-measuring-whether-ai-agents-act-in-users-best-interests/">SocialReasoning-Bench: Measuring whether AI agents act in users’ best interests</a> — Tyler Payne, Will Epperson, Safoora Yousefi, Zachary Huang, Gagan Bansal, Wenyue Hua, Maya Murad, Asli Celikyilmaz, Saleema Amershi <em>(Microsoft Research Blog)</em> <code>🔥 38/100</code></p>
+<p><span id="ref-4"></span><strong><a href="#ref-4" class="cite-link">[4]</a></strong> <a href="https://www.reddit.com/r/LocalLLaMA/comments/1tgecrq/i_built_a_coding_agent_that_gets_87_on_benchmarks/">I built a coding agent that gets 87% on benchmarks with a 4B parameter model, here&rsquo;s how</a> — Glittering_Focus1538 <em>(r/LocalLLaMA)</em> <code>🔥 46/100</code></p>
+<p><span id="ref-5"></span><strong><a href="#ref-5" class="cite-link">[5]</a></strong> <a href="https://github.com/bytedance/UI-TARS-desktop">bytedance/UI-TARS-desktop</a> <em>(GitHub Trending)</em> <code>🔥 44/100</code></p>
+<p><span id="ref-6"></span><strong><a href="#ref-6" class="cite-link">[6]</a></strong> <a href="https://huggingface.co/papers/2605.12058">Hölder Policy Optimisation</a> — Yuxiang Chen, Dingli Liang <em>(HuggingFace Papers)</em> <code>🔥 43/100</code></p>
+<p><span id="ref-7"></span><strong><a href="#ref-7" class="cite-link">[7]</a></strong> <a href="https://huggingface.co/papers/2605.13527">MMSkills: Towards Multimodal Skills for General Visual Agents</a> — Kangning Zhang, Shuai Shao <em>(HuggingFace Papers)</em> <code>🔥 41/100</code></p>
+<p><span id="ref-8"></span><strong><a href="#ref-8" class="cite-link">[8]</a></strong> <a href="https://www.reddit.com/r/artificial/comments/1tew6gr/we_keep_saying_ai_understands_things_does_it_or/">We keep saying AI &ldquo;understands&rdquo; things. Does it? Or are we just pattern-matching our own anthropomorphism?</a> — rajzzz_0 <em>(r/artificial)</em> <code>🔥 40/100</code></p>
+<p><span id="ref-9"></span><strong><a href="#ref-9" class="cite-link">[9]</a></strong> <a href="https://github.com/anthropics/skills">anthropics/skills</a> <em>(GitHub Trending)</em> <code>🔥 40/100</code></p>
+<p><span id="ref-10"></span><strong><a href="#ref-10" class="cite-link">[10]</a></strong> <a href="https://github.com/millionco/react-doctor">millionco/react-doctor</a> <em>(GitHub Trending)</em> <code>🔥 39/100</code></p>
+<p><span id="ref-11"></span><strong><a href="#ref-11" class="cite-link">[11]</a></strong> <a href="https://github.com/danielmiessler/Personal_AI_Infrastructure">danielmiessler/Personal_AI_Infrastructure</a> <em>(GitHub Trending)</em> <code>🔥 39/100</code></p>
+<p><span id="ref-12"></span><strong><a href="#ref-12" class="cite-link">[12]</a></strong> <a href="https://www.reddit.com/r/LocalLLaMA/comments/1tgm0k9/i_tested_42_llms_on_their_willingness_to_build/">I tested 42 LLMs on their willingness to build the apocalypse. The &ldquo;safest&rdquo; closed-source models are lying to you.</a> — Ok-Awareness9993 <em>(r/LocalLLaMA)</em> <code>🔥 39/100</code></p>
+<p><span id="ref-13"></span><strong><a href="#ref-13" class="cite-link">[13]</a></strong> <a href="https://www.reddit.com/r/LocalLLaMA/comments/1tftaaa/the_power_of_structured_workflows_and_small_local/">The power of structured workflows and small local models</a> — DeltaSqueezer <em>(r/LocalLLaMA)</em> <code>🔥 39/100</code></p>
+<p><span id="ref-14"></span><strong><a href="#ref-14" class="cite-link">[14]</a></strong> <a href="https://github.com/tech-leads-club/agent-skills">tech-leads-club/agent-skills</a> <em>(GitHub Trending)</em> <code>🔥 39/100</code></p>
+<p><span id="ref-15"></span><strong><a href="#ref-15" class="cite-link">[15]</a></strong> <a href="https://huggingface.co/papers/2605.15726">Nudging Beyond the Comfort Zone: Efficient Strategy-Guided Exploration for RLVR</a> — Chanuk Lee, Sangwoo Park <em>(HuggingFace Papers)</em> <code>🔥 39/100</code></p>
+<p><span id="ref-16"></span><strong><a href="#ref-16" class="cite-link">[16]</a></strong> <a href="https://github.com/MervinPraison/PraisonAI">MervinPraison/PraisonAI</a> <em>(GitHub Trending)</em> <code>🔥 38/100</code></p>
+<p><span id="ref-17"></span><strong><a href="#ref-17" class="cite-link">[17]</a></strong> <a href="https://github.com/MemoriLabs/Memori">MemoriLabs/Memori</a> <em>(GitHub Trending)</em> <code>🔥 38/100</code></p>
+<p><span id="ref-18"></span><strong><a href="#ref-18" class="cite-link">[18]</a></strong> <a href="https://github.com/bytedance/UI-TARS">bytedance/UI-TARS</a> <em>(GitHub Trending)</em> <code>🔥 37/100</code></p>
+<p><span id="ref-19"></span><strong><a href="#ref-19" class="cite-link">[19]</a></strong> <a href="https://github.com/ComposioHQ/composio">ComposioHQ/composio</a> <em>(GitHub Trending)</em> <code>🔥 37/100</code></p>
+<p><span id="ref-20"></span><strong><a href="#ref-20" class="cite-link">[20]</a></strong> <a href="https://openai.com/index/building-codex-windows-sandbox">Building a safe, effective sandbox to enable Codex on Windows</a> <em>(OpenAI Blog)</em> <code>🔥 33/100</code></p>
+<h2>📖 Glossary</h2>
+<p><strong>4B-class models</strong> — Models with about 4 billion adjustable internal values. That’s small compared with the biggest models, but still large enough to do useful work if the surrounding workflow is well designed.</p>
+<p><strong>Anthropic’s skills repo</strong> — A shared code library from Anthropic for reusable agent “skills.” In plain terms, it’s a place where people can store and reuse little chunks of know-how instead of rewriting them every time.</p>
+<p><strong>base model</strong> — The original general-purpose model before you add special tools, memory, or workflow rules around it. It’s the “engine” underneath the rest of the system.</p>
+<p><strong>Calendar Coordination</strong> — A benchmark task where an agent has to schedule meetings while balancing constraints, preferences, and tradeoffs. It tests whether the system can do more than just find an open slot.</p>
+<p><strong>Composio</strong> — A tool layer that connects agents to outside software and services in a more organized way. Think of it as plumbing that helps an agent use apps without every connection being built from scratch.</p>
+<p><strong>context budgeting</strong> — Deliberately limiting how much information you give the model at once. The goal is to keep it focused and avoid wasting space on details that don’t help the current step.</p>
+<p><strong>control surface</strong> — The set of levers, permissions, and boundaries that determine what an agent is allowed to do. If an agent can act in the real world, these controls are what keep that power manageable.</p>
+<p><strong>constrained execution environment</strong> — A setup where the agent can run only inside clear limits. For example, it may be allowed to use certain files or tools but blocked from everything else.</p>
+<p><strong>constrained tool use</strong> — Letting an agent use only a small, approved set of tools, often in specific ways. This reduces chaos and makes mistakes easier to catch.</p>
+<p><strong>credit assignment</strong> — Figuring out which earlier choices helped or hurt the final result. It matters because a system can only improve if it knows what part of its behavior deserves the “credit” or the blame.</p>
+<p><strong>delegated workflow</strong> — A longer task handed off to an agent to carry out on your behalf. Instead of answering one question, the system is acting like an assistant across many steps.</p>
+<p><strong>document integrity</strong> — Keeping a document’s meaning, structure, and important details intact as the agent edits or passes it along. In short, the document should still say what the user meant it to say.</p>
+<p><strong>due diligence</strong> — Doing the careful checking and comparison a competent assistant should do before making a choice. It means not settling too quickly when a better option may exist.</p>
+<p><strong>dynamic loadable skills</strong> — Skills that can be added to an agent when needed instead of being permanently baked in. It’s like installing a tool only when the current job calls for it.</p>
+<p><strong>effective architecture</strong> — The system you actually end up with in practice, including the model, tools, memory, permissions, and environment around it. This matters because the model alone often doesn’t explain how the agent really behaves.</p>
+<p><strong>environment-native</strong> — Built to work directly inside a real working environment like a desktop, browser, or app interface. Instead of only talking about actions, the agent can operate where the actions happen.</p>
+<p><strong>evolutionary search</strong> — A try-many-options approach inspired by natural selection. The system creates different candidate solutions, keeps the better ones, and uses them to guide the next round.</p>
+<p><strong>explicit validation</strong> — Adding clear checks to confirm that a step or result is actually correct. Rather than trusting the model’s confidence, you make it prove the answer passed some test.</p>
+<p><strong>exploration bottleneck</strong> — A situation where the system keeps trying familiar paths and doesn’t search widely enough for better ones. It gets stuck in its comfort zone.</p>
+<p><strong>failure surface</strong> — All the different ways a system can go wrong. As agents gain more abilities, the number of possible failure points grows too.</p>
+<p><strong>follow-up on AI delegation</strong> — A later Microsoft write-up expanding on earlier work about handing tasks to AI assistants. The focus is on whether the system remains reliable over many steps, not just whether it looks capable in short demos.</p>
+<p><strong>frontier agents</strong> — The most advanced agents available at the current moment. This usually means systems near the cutting edge of what the field can do.</p>
+<p><strong>frontier-model</strong> — A model near the leading edge in size or performance. People use the term to mean “one of the strongest models currently available.”</p>
+<p><strong>GRPO</strong> — <strong>Group Relative Policy Optimization.</strong> A training method that improves a model by comparing several outputs against each other and rewarding the better ones, rather than judging each output in isolation.</p>
+<p><strong>guardrail tooling</strong> — Software that adds safety checks, limits, or warnings around an agent. It helps prevent bad actions or catch them before they cause damage.</p>
+<p><strong>GUI</strong> — <strong>Graphical User Interface.</strong> The visual part of software — buttons, menus, windows, forms — that people click and type into.</p>
+<p><strong>Hölder Policy Optimisation</strong> — A training method proposed to improve how learning signals are spread across a generated answer. In simple terms, it tries to teach the model more fairly from the whole sequence instead of assigning blame or praise in a crude way.</p>
+<p><strong>inference-time analogue</strong> — A similar idea applied while the model is being used, rather than while it is being trained. It means “the runtime version of the same basic trick.”</p>
+<p><strong>interpretability</strong> — The effort to understand why a model made a particular choice. It’s about making the system less of a black box.</p>
+<p><strong>long-horizon delegation</strong> — Giving an agent a task that unfolds over many steps and over time. The challenge is that small mistakes can pile up and drift away from what the user actually wanted.</p>
+<p><strong>Marketplace Negotiation</strong> — A benchmark task where an agent has to bargain or choose among offers on behalf of a user. It tests whether the system protects the user’s interests instead of just closing the deal quickly.</p>
+<p><strong>Memori</strong> — A product or framework focused on giving agents persistent memory. The basic idea is to help the system remember useful facts and past work across sessions.</p>
+<p><strong>Microsoft’s benchmark</strong> — A test suite from Microsoft designed to measure how well agents act in a user’s interest in social or delegated tasks. It goes beyond “did the task finish?” and asks “did the agent handle it well for the user?”</p>
+<p><strong>MMSkills</strong> — A framework for reusable skills in multimodal agents. Instead of stuffing instructions into one prompt, it treats useful behaviors as modules the agent can call again later.</p>
+<p><strong>modeling user preferences</strong> — Estimating what the user actually wants, values, or would choose. This matters when there isn’t one obvious correct answer.</p>
+<p><strong>multimodal</strong> — Able to work with more than one kind of input or output, such as text, images, screens, or audio. A multimodal agent doesn’t live in words alone.</p>
+<p><strong>multimodal skills</strong> — Reusable abilities that involve more than just text, such as reading a screen, interpreting an image, or acting in a visual interface. They let an agent handle richer kinds of tasks.</p>
+<p><strong>multi-party settings</strong> — Situations involving several people with different goals or constraints. The agent has to navigate competing interests, not just follow one direct instruction.</p>
+<p><strong>naïve autonomous loops</strong> — Simple agent setups that keep asking the model what to do next without much structure or oversight. They often look flexible, but they can wander, repeat themselves, or make avoidable mistakes.</p>
+<p><strong>one-shot inference</strong> — Asking the model to solve a task in a single pass, without building on memory, retries, or reusable skills. It’s the “just answer it now” style of use.</p>
+<p><strong>OpenAI’s Windows Codex sandbox work</strong> — Work on running coding agents inside a restricted Windows environment. The point is to let the agent do useful things while limiting what damage it can cause.</p>
+<p><strong>optimization over traces</strong> — Improving performance by comparing full records of how the system worked through a task, then favoring the better ones. Instead of only caring about the final answer, it learns from the path taken.</p>
+<p><strong>outcome optimality</strong> — How good the final result was for the user. It asks whether the agent got a strong outcome, not merely whether it completed the task.</p>
+<p><strong>partially observed environments</strong> — Situations where the agent can see only part of what matters at any given moment. It has to act without having the full picture.</p>
+<p><strong>persistent memory</strong> — Memory that lasts across steps or sessions instead of disappearing after one exchange. This lets an agent remember past facts, decisions, and lessons.</p>
+<p><strong>persistent state</strong> — Stored information about what has already happened and what the system is currently doing. It’s the agent’s running memory of the job, not just a one-time note.</p>
+<p><strong>Personal AI Infrastructure</strong> — A broader setup for running and managing personal AI systems, usually including memory, tools, storage, and permissions. It’s the support system around the model.</p>
+<p><strong>plain prompt snippets</strong> — Small pieces of instruction text pasted into prompts. They can be useful, but they are less structured and reusable than proper skill modules.</p>
+<p><strong>PraisonAI</strong> — An agent framework or stack for building more capable assistants with tools and workflows. It aims to provide the surrounding system, not just the model call.</p>
+<p><strong>procedural state</strong> — The remembered “where we are in the process” part of a task. For example, which steps are done, what was tried already, and what should happen next.</p>
+<p><strong>problem-solving traces</strong> — Records of the steps the system took while trying to solve a problem. These traces can be saved, reviewed, and reused to improve later attempts.</p>
+<p><strong>raw task competence</strong> — The basic ability to do the immediate task in front of the system. It does not guarantee the system will stay aligned with the user’s broader goal over time.</p>
+<p><strong>react-doctor</strong> — A guardrail tool aimed at catching or correcting bad agent behavior in React-style workflows or tool-using loops. The main idea is to add checks so the agent doesn’t blindly continue when something looks wrong.</p>
+<p><strong>reasoning trajectories</strong> — The paths a model takes as it works through a problem step by step. Different paths can lead to different results, even on the same task.</p>
+<p><strong>reusable substrates</strong> — Foundational building blocks that can support many later tasks. In plain English, these are durable pieces of know-how you can keep using instead of rewriting from scratch.</p>
+<p><strong>reusable skills</strong> — Repeatable abilities packaged so an agent can call them again later. They are like saved procedures rather than one-off instructions.</p>
+<p><strong>RLVR</strong> — <strong>Reinforcement Learning with Verifiable Rewards.</strong> A training approach where the model improves by getting rewarded on tasks whose success can be checked clearly, like math or code tests.</p>
+<p><strong>sandboxing</strong> — Running a system inside a restricted area where it can do only limited things. It’s a safety measure meant to contain mistakes or abuse.</p>
+<p><strong>search over agent behavior</strong> — Trying multiple possible action plans and comparing them instead of following the first idea the model produces. This often improves results because the best path is not always the first path.</p>
+<p><strong>sequence-level advantages</strong> — Scores that say how good a whole generated answer or action sequence was compared with alternatives. The challenge is turning that whole-sequence score into useful learning for each small step inside it.</p>
+<p><strong>simulated settings</strong> — Artificial test environments designed to imitate real situations. They let researchers measure behavior in a controlled way before trying systems in the wild.</p>
+<p><strong>single prompt + tool loop</strong> — A simple agent pattern where one prompt tells the model what to do, then the system repeatedly calls tools and asks what to do next. It works for basic tasks but often struggles with longer, messier jobs.</p>
+<p><strong>skill registries</strong> — Catalogs where reusable agent skills are stored and discovered. They make it easier to share and plug in capabilities across systems.</p>
+<p><strong>skills repo</strong> — Short for “skills repository.” It’s a collection of reusable skills stored in one place so agents or developers can find and reuse them.</p>
+<p><strong>social ambiguity</strong> — Situations where the right move depends on reading people, intentions, and context rather than following a clear rule. These are hard because several actions may look reasonable on the surface.</p>
+<p><strong>social reasoning</strong> — Thinking through what different people want, know, expect, or might do next. For an agent, this means handling human situations, not just mechanical tasks.</p>
+<p><strong>SocialReasoning-Bench</strong> — A benchmark designed to test whether agents act in the user’s best interests in social tasks like scheduling and negotiation. It measures not just completion, but judgment and loyalty to the user’s goals.</p>
+<p><strong>Solvita</strong> — A system or research project that improves performance by saving, refining, and reusing problem-solving behavior across tasks. Its key idea is that progress comes from an evolving agent process, not just one stronger answer.</p>
+<p><strong>stateless loops</strong> — Agent setups where each step has little or no lasting memory of previous work. They can act repeatedly, but they don’t really build up experience.</p>
+<p><strong>strategy-guided exploration</strong> — A way of pushing a model to try more promising kinds of solutions instead of only repeating familiar ones. It adds direction to exploration without fully scripting the answer.</p>
+<p><strong>third-party skill registries</strong> — Skill catalogs built by outside groups rather than the original model company. They help create an ecosystem where capabilities can be shared more broadly.</p>
+<p><strong>token-level learning signals</strong> — Tiny feedback signals attached to individual pieces of generated text. These signals tell the model which small choices were helpful or harmful.</p>
+<p><strong>tool scoping</strong> — Limiting which tools an agent can access and in what situations. It’s a way to reduce risk by narrowing the agent’s reach.</p>
+<p><strong>trajectory comfort zone</strong> — The set of solution paths the model tends to stick to because they are familiar or easy. Leaving that comfort zone can uncover better answers.</p>
+<p><strong>traces</strong> — Saved records of what the agent did while solving a task. They can include steps, tool calls, intermediate outputs, and decisions.</p>
+<p><strong>UI-TARS</strong> — A system for agents that operate through user interfaces rather than only through text. It focuses on understanding screens and taking actions in software environments.</p>
+<p><strong>UI-TARS-desktop</strong> — A desktop-focused version of UI-TARS. It is aimed at agents that can work directly with windows, apps, and on-screen controls.</p>
+<p><strong>user-interest preservation</strong> — Keeping the user’s real goals and preferences protected throughout a task. It means the agent should not drift into choices that are merely easy, fast, or superficially acceptable.</p>
+<p><strong>verification hooks</strong> — Places in a workflow where outside checks can inspect or approve what the agent is doing. They act like checkpoints before the system moves on.</p>
+<p><strong>visual agents</strong> — Agents that can interpret images, screens, or other visual input and act based on what they see. They are not limited to text descriptions of the world.</p>
+<p><strong>workflow design</strong> — The way tasks, checks, tools, and handoffs are organized around the model. Good workflow design can make even a weaker model much more reliable.</p>
+<p><strong>working globally / failing locally</strong> — A contrast between looking good on individual steps and still missing the real goal overall. An agent can seem competent moment to moment while still doing the wrong thing for the user in the end.</p>
+<h2>📏 Buzz Score Rubric</h2>
+<p>How we calculate the 🔥 score for each item:</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Points</th>
+<th>How it&rsquo;s measured</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Engagement</strong></td>
+<td>0–35</td>
+<td>Log-scaled from raw metrics: GitHub stars gained, Reddit upvotes, HuggingFace upvotes, comment counts. A paper with 50 HF upvotes or a repo with 300 stars/week scores ~25-30.</td>
+</tr>
+<tr>
+<td><strong>Cross-referencing</strong></td>
+<td>0–30</td>
+<td>How many <em>different</em> sources mention this item. 2 sources = 12 pts, 3 = 22 pts, 4+ = 30 pts. This is the hardest component to earn — it means the item broke out of its original channel.</td>
+</tr>
+<tr>
+<td><strong>Relevance</strong></td>
+<td>0–15</td>
+<td>LLM-scored relevance to your interests (agents, prompting, reasoning, failure modes). Score ≥9/10 = 15 pts, ≥7 = 10 pts, ≥5 = 5 pts.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Reading the scale:</strong></p>
+<ul>
+<li><strong>90–100</strong>: Viral across the community. Multiple source types, massive engagement. Rare.</li>
+<li><strong>70–89</strong>: High buzz. Cross-referenced across 3+ platforms with strong engagement.</li>
+<li><strong>50–69</strong>: Solid interest. Good numbers in one major source plus some cross-referencing.</li>
+<li><strong>30–49</strong>: Noteworthy. Single source with decent engagement. Most items land here.</li>
+<li><strong>10–29</strong>: Niche but relevant. Low engagement or brand-new with no traction data yet.</li>
+</ul>
+<p><em>Most items in a given week score 25–50. A score above 70 means something genuinely broke through. If everything scored 90+, the scale would be meaningless.</em></p>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    Generated 2026-05-18 15:50 UTC<br>
+    Curated by GPT · Delivered by <a href="https://github.com/your-username/ai-weekly-digest">AI Weekly Digest</a>
+  </div>
+
+</body>
+</html>
